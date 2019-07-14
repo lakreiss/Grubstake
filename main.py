@@ -18,7 +18,7 @@ def main():
     # print("Hello, world")
     unit = "village"
     counselor = "caliph"
-    food_list = ["quesadillas", "chipsandsalsa"]
+    food_list = ["quesadillas", "chipsandsalsa", "smores"]
     order1 = Order(unit, counselor, food_list, 10)
     order1.output_order_needs()
     #if an_error_occurred:
