@@ -1,0 +1,16 @@
+Supplies
+pan 2
+spatula 2
+stove 1
+propane 2
+matches 1
+
+Ingredients
+cheese 1
+tortilla 1
+beans 0.5
+tomato 0.25
+onion 0.25
+fork 1
+plate 1
+chicken 0.25

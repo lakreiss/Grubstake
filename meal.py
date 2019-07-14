@@ -5,11 +5,12 @@ class Meal:
     def parse_meal(self):
         supplies = []
         ingredients = []
-        file_name = self.meal_name + ".txt"
+        file_name = "meals/" + self.meal_name + ".txt"
         f= open(file_name, "r")
         fl = f.readlines()
         isSupply = False
-        isIngredient = True
+        isIngredient = False
+        isPeople = False
         for line in fl:
             words = line.lower().split()
             if (len(words) == 0):
@@ -23,6 +24,13 @@ class Meal:
                     print("INGREDIENTS")
                     isSupply = False
                     isIngredient = True
+                elif (words[0] == "people"):
+                    print("PEOPLE")
+                    isPeople = True
+                elif isPeople:
+                    self.people = words[0]
+                    isPeople = False
+                    print("This feeds", self.people, "people")
                 else:
                     print("ERROR: not enough words")
             else:
@@ -35,7 +43,7 @@ class Meal:
                     ingredients += [tuple]
                 else:
                     print("ERROR: unclear item type")
-                    
+
                 print(item, number)
 
         return supplies, ingredients

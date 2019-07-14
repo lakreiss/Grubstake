@@ -16,8 +16,10 @@ def main():
     # is returned.
     #
     # print("Hello, world")
-    food_list = ["quesadillas"]
-    order1 = Order(food_list, 10)
+    unit = "village"
+    counselor = "caliph"
+    food_list = ["quesadillas", "chipsandsalsa"]
+    order1 = Order(unit, counselor, food_list, 10)
     order1.output_order_needs()
     #if an_error_occurred:
     #    return 'I\'m returning a string, it will be printed and 1 returned'

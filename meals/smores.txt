@@ -1,0 +1,7 @@
+PEOPLE
+20
+
+INGREDIENTS
+graham_crackers 5
+marshmallows 1
+chocolate 8
