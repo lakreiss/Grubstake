@@ -20,7 +20,7 @@ def main():
     counselor = "caliph"
     food_list = ["quesadillas", "chipsandsalsa", "smores"]
     order1 = Order(unit, counselor, food_list, 10)
-    order1.output_order_needs()
+    order1.get_order_needs()
     #if an_error_occurred:
     #    return 'I\'m returning a string, it will be printed and 1 returned'
     #

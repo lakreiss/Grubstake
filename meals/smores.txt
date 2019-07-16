@@ -2,6 +2,9 @@ PEOPLE
 20
 
 INGREDIENTS
-graham_crackers 5
+graham_crackers 3
 marshmallows 1
 chocolate 8
+
+SUPPLIES
+roasting_sticks 5

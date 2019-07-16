@@ -18,13 +18,14 @@ class Order:
         self.order_info["dropoff_time"] = dropoff_time
         self.log_order()
 
-    def output_order_needs(self):
+    #only used for debugging
+    def get_order_needs(self):
         for item_name in self.order_info["item_name_list"]:
             meal = Meal(item_name)
             meal_supplies = meal.get_supplies()
             meal_ingredients = meal.get_ingredients()
             meal_people = meal.get_people()
-        return 'output_order_needs complete'
+        return 'get_order_needs complete'
 
     def log_order(self):
 
@@ -41,7 +42,7 @@ class Order:
 
         #THIS SECTION IS ONLY FOR ONE CABIN'S LOG -- EACH CABIN HAS THEIR OWN FILE
         #makes a folder if folder doesn't already exist
-        cabin_log_folder_name = session_log_file_name + /day_" + str(self.order_info["pickup_day"])
+        cabin_log_folder_name = session_log_file_name + "/day_" + str(self.order_info["pickup_day"])
         if not os.path.exists(cabin_log_folder_name):
             os.makedirs(cabin_log_folder_name)
         cabin_log_file_name = cabin_log_folder_name + "/" + str(self.order_info["counselor_name"]) + ".txt"
@@ -49,7 +50,7 @@ class Order:
 
         self.log_cabin_file(cabin_file)
 
-    def log_day_file(self, day_file)
+    def log_day_file(self, day_file):
         #sort keys to standardize output
         all_keys = []
         for key in self.order_info:
@@ -66,7 +67,7 @@ class Order:
         text += "\n"
         day_file.write(text)
 
-    def log_cabin_file(self, cabin_file) #TODO
+    def log_cabin_file(self, cabin_file):
         #sort keys to standardize output
         all_keys = []
         for key in self.order_info:
@@ -82,3 +83,26 @@ class Order:
                 text += ", " + key + " " + str(self.order_info[key])
         text += "\n"
         cabin_file.write(text)
+        cabin_file.write("\n")
+
+        #collect all meals
+        all_meals = []
+        for item_name in self.order_info["item_name_list"]:
+            meal = Meal(item_name)
+            all_meals += [meal]
+
+        #calculate all supplies and ingredients
+        all_supplies = {}
+        all_ingredients = {}
+        for meal in all_meals:
+            meal_supplies = meal.get_supplies()
+            meal_ingredients = meal.get_ingredients()
+            meal_people = meal.get_people()
+            print(meal.meal_name)
+            print(meal_supplies)
+            print(meal_ingredients)
+            print(meal_people)
+
+            for supply in meal_supplies:
+                if supply[0] not in all_supplies:
+                    all_supplies[supply[0]] = supply[1]
