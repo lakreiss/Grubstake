@@ -1,21 +1,21 @@
 from meal import Meal
-import os, math
+import sys, math, os
 
 class Order:
     cur_session = 3
     overnight_day = 2
     order_info = {} #contains counselor_name, unit_name, item_name_list, num_people, session, pickup_day, pickup_time, dropoff_day, dropoff_time
 
-    def __init__(self, unit_name, counselor_name, item_list, num_people, session=cur_session, pickup_day=overnight_day, pickup_time=1430, dropoff_day=(overnight_day+1), dropoff_time=1100):
+    def __init__(self, unit_name, counselor_name, item_list, num_people, session=cur_session, pickup_day=overnight_day, pickup_time="2:30", dropoff_day=(overnight_day+1), dropoff_time="11:00"):
         self.order_info["unit_name"] = unit_name
         self.order_info["counselor_name"] = counselor_name
         self.order_info["item_name_list"] = item_list
-        self.order_info["num_people"] = float(num_people)
+        self.order_info["num_people"] = int(num_people)
         self.order_info["session"] = session
         self.order_info["pickup_day"] = pickup_day
         self.order_info["pickup_time"] = pickup_time
-        self.order_info["dropoff_day"] = dropoff_day
-        self.order_info["dropoff_time"] = dropoff_time
+        self.order_info["drop_off_day"] = dropoff_day
+        self.order_info["drop_off_time"] = dropoff_time
         self.log_order()
 
     #only used for debugging
@@ -29,7 +29,6 @@ class Order:
         return 'get_order_needs complete'
 
     def log_order(self):
-
         #THIS SECTION IS FOR THE ENTIRE DAY'S LOG -- ALL CABINS CONTRIBUTE TO THIS LOG
         #makes a folder if folder doesn't already exist
         session_log_file_name = "sessions/session_" + str(self.order_info["session"])
@@ -53,10 +52,7 @@ class Order:
 
     def log_day_file(self, day_file):
         #sort keys to standardize output
-        all_keys = []
-        for key in self.order_info:
-            all_keys += [key]
-        all_keys.sort()
+        all_keys = self.dictionary_to_sorted_list(self.order_info)
 
         #collect all order info
         text = ""
@@ -78,11 +74,7 @@ class Order:
         #collect all order info
         text = ""
         for key in all_keys:
-            if (text == ""):
-                text += key + " " + str(self.order_info[key])
-            else:
-                text += ", " + key + " " + str(self.order_info[key])
-        text += "\n"
+            text += key + " " + str(self.order_info[key]).upper() + "\n"
         cabin_file.write(text)
         cabin_file.write("\n")
 
@@ -109,10 +101,10 @@ class Order:
             #adds supplies if supply hasn't been added yet
             for supply in meal_supplies:
                 if supply[0] not in all_supplies:
-                    all_supplies[supply[0]] = float(supply[1])
+                    all_supplies[supply[0]] = int(supply[1])
                 else:
                     old_supply_num = all_supplies[supply[0]]
-                    new_supply_num = float(supply[1])
+                    new_supply_num = int(supply[1])
                     if (old_supply_num < new_supply_num):
                         all_supplies[supply[0]] = new_supply_num
 
@@ -128,12 +120,12 @@ class Order:
             # print("ingred list 2", all_ingredients)
 
             for per_person in meal_pp:
-                num_to_add = math.ceil(float(per_person[1]) * self.order_info["num_people"])
+                num_to_add = (int(per_person[1]) * self.order_info["num_people"])
                 if per_person[0] not in all_pp:
                     all_pp[per_person[0]] = num_to_add
                 else:
                     old_pp_num = all_pp[per_person[0]]
-                    new_pp_num = float(per_person[1])
+                    new_pp_num = int(per_person[1])
                     if (old_pp_num < new_pp_num):
                         all_pp[per_person[0]] = new_pp_num
 
@@ -147,13 +139,12 @@ class Order:
         for supply in supplies_list:
             cabin_file.write(supply + " " + str(all_supplies[supply]) + "\n")
         cabin_file.write("\n")
+        for per_person in pp_list:
+            cabin_file.write(per_person + " " + str(all_pp[per_person]) + "\n")
+        cabin_file.write("\n")
         cabin_file.write("INGREDIENTS\n")
         for ingredient in ingredients_list:
             cabin_file.write(ingredient + " " + str(all_ingredients[ingredient]) + "\n")
-        cabin_file.write("\n")
-        cabin_file.write("PER PERSON SUPPLIES\n")
-        for per_person in pp_list:
-            cabin_file.write(per_person + " " + str(all_pp[per_person]) + "\n")
 
     def dictionary_to_sorted_list(self, dict):
         all_keys = []
