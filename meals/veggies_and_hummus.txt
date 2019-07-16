@@ -1,0 +1,7 @@
+PEOPLE
+10
+
+INGREDIENTS
+carrots 1
+celery 1
+hummus 10

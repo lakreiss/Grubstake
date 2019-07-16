@@ -21,6 +21,12 @@ def main():
     food_list = ["quesadillas", "chips_and_salsa", "smores"]
     order1 = Order(unit, counselor, food_list, 10)
     order1.get_order_needs()
+
+    unit = "the hill"
+    counselor = "tortuga"
+    food_list = ["stir_fry", "veggies_and_hummus"]
+    order2 = Order(unit, counselor, food_list, 10, pickup_day=3, dropoff_day=4)
+    order2.get_order_needs()
     #if an_error_occurred:
     #    return 'I\'m returning a string, it will be printed and 1 returned'
     #
