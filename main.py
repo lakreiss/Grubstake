@@ -15,9 +15,36 @@ def main():
     # So, if you return None, 0 is returned.  If you return integer, that
     # return code is used.  Anything else is printed to the console and 1 (error)
     # is returned.
-    #
-    # print("Hello, world")
 
+    open_main_menu_gui()
+
+    #if an_error_occurred:
+    #    return 'I\'m returning a string, it will be printed and 1 returned'
+    #
+
+    # Otherwise 0, success is returned.
+    return 0
+
+def open_enter_order_gui():
+    #TODO
+    print("hello, world")
+
+#USED FOR TESTING
+def make_orders():
+    # MAIN CODE
+    unit = "village"
+    counselor = "caliph"
+    food_list = ["quesadillas", "chips_and_salsa", "smores"]
+    order1 = Order(unit, counselor, food_list, 10)
+    order1.get_order_needs()
+
+    unit = "the hill"
+    counselor = "tortuga"
+    food_list = ["stir_fry", "veggies_and_hummus"]
+    order2 = Order(unit, counselor, food_list, 10, pickup_day=3, dropoff_day=4)
+    order2.get_order_needs()
+
+def open_main_menu_gui():
     main_screen = tk.Tk()
     main_screen.title("Grubstake")
     pixel = tk.PhotoImage(width=1, height=1)
@@ -39,6 +66,7 @@ def main():
 
     enter_order_button = tk.Button(frames_list[button_counter], text="Enter Order", image=pixel, compound="c")
     enter_order_button.pack(expand=True, fill="both")
+    enter_order_button.config(command=main_screen.quit
     button_list.append(enter_order_button)
     button_counter += 1
 
@@ -50,27 +78,6 @@ def main():
     # main_screen.resizable(width=False, height=False)
     main_screen.mainloop()
 
-
-    # MAIN CODE
-    # unit = "village"
-    # counselor = "caliph"
-    # food_list = ["quesadillas", "chips_and_salsa", "smores"]
-    # order1 = Order(unit, counselor, food_list, 10)
-    # order1.get_order_needs()
-    #
-    # unit = "the hill"
-    # counselor = "tortuga"
-    # food_list = ["stir_fry", "veggies_and_hummus"]
-    # order2 = Order(unit, counselor, food_list, 10, pickup_day=3, dropoff_day=4)
-    # order2.get_order_needs()
-
-
-    #if an_error_occurred:
-    #    return 'I\'m returning a string, it will be printed and 1 returned'
-    #
-
-    # Otherwise 0, success is returned.
-    return 0
 
 # This is true if the script is run by the interpreter, not imported by another
 # module.
