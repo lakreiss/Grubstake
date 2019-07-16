@@ -9,12 +9,11 @@ propane 2
 matches 1
 
 INGREDIENTS
-cheese 1
-tortilla 10
-beans 0.5
-tomato 2
-onion 1
-chicken 1
+pancake_mix 0.5
+bacon 20
+lil_yami 10
+butter 1
+syrup 10
 
 PER_PERSON_SUPPLIES
 fork 1

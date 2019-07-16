@@ -1,5 +1,5 @@
 from meal import Meal
-import os
+import os, math
 
 class Order:
     cur_session = 3
@@ -10,7 +10,7 @@ class Order:
         self.order_info["unit_name"] = unit_name
         self.order_info["counselor_name"] = counselor_name
         self.order_info["item_name_list"] = item_list
-        self.order_info["num_people"] = num_people
+        self.order_info["num_people"] = float(num_people)
         self.order_info["session"] = session
         self.order_info["pickup_day"] = pickup_day
         self.order_info["pickup_time"] = pickup_time
@@ -25,6 +25,7 @@ class Order:
             meal_supplies = meal.get_supplies()
             meal_ingredients = meal.get_ingredients()
             meal_people = meal.get_people()
+            meal_per_person_supplies = meal.get_per_person_supplies()
         return 'get_order_needs complete'
 
     def log_order(self):
@@ -98,11 +99,32 @@ class Order:
             meal_supplies = meal.get_supplies()
             meal_ingredients = meal.get_ingredients()
             meal_people = meal.get_people()
-            print(meal.meal_name)
-            print(meal_supplies)
-            print(meal_ingredients)
-            print(meal_people)
+            # print(meal.meal_name)
+            # print(meal_supplies)
+            # print(meal_ingredients)
+            # print(meal_people)
 
+            #adds supplies if supply hasn't been added yet
             for supply in meal_supplies:
                 if supply[0] not in all_supplies:
-                    all_supplies[supply[0]] = supply[1]
+                    all_supplies[supply[0]] = float(supply[1])
+                else:
+                    old_supply_num = all_supplies[supply[0]]
+                    new_supply_num = float(supply[1])
+                    if (old_supply_num < new_supply_num):
+                        all_supplies[supply[0]] = new_supply_num
+
+            # print("ingred list 1", all_ingredients)
+            #adds ingredient
+            for ingredient in meal_ingredients:
+                num_to_add = math.ceil(float(ingredient[1]) * (self.order_info["num_people"] / meal_people))
+                if ingredient[0] in all_ingredients:
+                    all_ingredients[ingredient[0]] = all_ingredients[ingredient[0]] + num_to_add
+                else:
+                    all_ingredients[ingredient[0]] = num_to_add
+
+            # print("ingred list 2", all_ingredients)
+
+        cabin_file.write("SUPPLIES\n")
+        for supply in all_supplies:
+            cabin_file.write(supply + " " + str(all_supplies[supply]) + "\n")

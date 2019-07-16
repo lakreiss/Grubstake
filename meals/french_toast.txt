@@ -3,19 +3,19 @@ PEOPLE
 
 SUPPLIES
 pan 2
-spatula 2
+spatula 1
 stove 1
 propane 2
 matches 1
 
 INGREDIENTS
-cheese 1
-tortilla 10
-beans 0.5
-tomato 2
-onion 1
-chicken 1
+sausage 20
+bread 1
+butter 1
+liquid_egg 1
+syrup 10
 
 PER_PERSON_SUPPLIES
 fork 1
+knife 1
 plate 1

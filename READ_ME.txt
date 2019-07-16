@@ -10,3 +10,11 @@ ingredients are combined together for each meal
 each meal gives an estimated serving size for the quantity of items it lists.
 these serving sizes are then divided by the number of people in the order, rounding up,
 to determine the amount of food to serve
+
+
+THINGS TO DO IN THE FUTURE
+multiplies for different units
+options ****
+GUI *****
+differentiate breakfast, dinner, misc.
+make order input mechanical from text file

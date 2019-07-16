@@ -1,0 +1,23 @@
+PEOPLE
+10
+
+SUPPLIES
+pan 1
+pot 1
+spatula 1
+stove 1
+propane 2
+matches 1
+
+INGREDIENTS
+hot_dogs 10
+buns 10
+baked_beans 2
+corn_bread_mix 0.5
+ketchup 10
+mustard 10
+relish 10
+
+PER_PERSON_SUPPLIES
+fork 1
+plate 1

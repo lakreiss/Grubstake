@@ -1,0 +1,12 @@
+PEOPLE
+10
+
+INGREDIENTS
+bagels 2
+cream_cheese 10
+jam 10
+sun_butter 10
+
+PER_PERSON_SUPPLIES
+knife 1
+plate 1
