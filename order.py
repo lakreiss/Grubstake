@@ -137,15 +137,27 @@ class Order:
                     if (old_pp_num < new_pp_num):
                         all_pp[per_person[0]] = new_pp_num
 
+        #sort lists so that each output is deterministic
+        supplies_list = self.dictionary_to_sorted_list(all_supplies)
+        ingredients_list = self.dictionary_to_sorted_list(all_ingredients)
+        pp_list = self.dictionary_to_sorted_list(all_pp)
 
+        #prints to file, overwriting anything that was written before
         cabin_file.write("SUPPLIES\n")
-        for supply in all_supplies:
+        for supply in supplies_list:
             cabin_file.write(supply + " " + str(all_supplies[supply]) + "\n")
         cabin_file.write("\n")
         cabin_file.write("INGREDIENTS\n")
-        for ingredient in all_ingredients:
+        for ingredient in ingredients_list:
             cabin_file.write(ingredient + " " + str(all_ingredients[ingredient]) + "\n")
         cabin_file.write("\n")
         cabin_file.write("PER PERSON SUPPLIES\n")
-        for per_person in all_pp:
+        for per_person in pp_list:
             cabin_file.write(per_person + " " + str(all_pp[per_person]) + "\n")
+
+    def dictionary_to_sorted_list(self, dict):
+        all_keys = []
+        for key in dict:
+            all_keys += [key]
+        all_keys.sort()
+        return all_keys
