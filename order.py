@@ -47,7 +47,7 @@ class Order:
         if not os.path.exists(cabin_log_folder_name):
             os.makedirs(cabin_log_folder_name)
         cabin_log_file_name = cabin_log_folder_name + "/" + str(self.order_info["counselor_name"]) + ".txt"
-        cabin_file = open(cabin_log_file_name, "a")
+        cabin_file = open(cabin_log_file_name, "w")
 
         self.log_cabin_file(cabin_file)
 
@@ -95,9 +95,11 @@ class Order:
         #calculate all supplies and ingredients
         all_supplies = {}
         all_ingredients = {}
+        all_pp = {}
         for meal in all_meals:
             meal_supplies = meal.get_supplies()
             meal_ingredients = meal.get_ingredients()
+            meal_pp = meal.get_per_person_supplies()
             meal_people = meal.get_people()
             # print(meal.meal_name)
             # print(meal_supplies)
@@ -125,6 +127,25 @@ class Order:
 
             # print("ingred list 2", all_ingredients)
 
+            for per_person in meal_pp:
+                num_to_add = math.ceil(float(per_person[1]) * self.order_info["num_people"])
+                if per_person[0] not in all_pp:
+                    all_pp[per_person[0]] = num_to_add
+                else:
+                    old_pp_num = all_pp[per_person[0]]
+                    new_pp_num = float(per_person[1])
+                    if (old_pp_num < new_pp_num):
+                        all_pp[per_person[0]] = new_pp_num
+
+
         cabin_file.write("SUPPLIES\n")
         for supply in all_supplies:
             cabin_file.write(supply + " " + str(all_supplies[supply]) + "\n")
+        cabin_file.write("\n")
+        cabin_file.write("INGREDIENTS\n")
+        for ingredient in all_ingredients:
+            cabin_file.write(ingredient + " " + str(all_ingredients[ingredient]) + "\n")
+        cabin_file.write("\n")
+        cabin_file.write("PER PERSON SUPPLIES\n")
+        for per_person in all_pp:
+            cabin_file.write(per_person + " " + str(all_pp[per_person]) + "\n")

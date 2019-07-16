@@ -7,7 +7,7 @@ class Meal:
     def read_file(self):
         supplies = []
         ingredients = []
-        per_person_supplies = {}
+        per_person_supplies = []
         num_people_per_serving = 1 #default
         f= open(self.file_name, "r")
         fl = f.readlines()
@@ -48,7 +48,7 @@ class Meal:
                 elif (is_ingredient):
                     ingredients += [tuple]
                 elif (is_per_person_supplies):
-                    per_person_supplies[item] = number
+                    per_person_supplies += [tuple]
                 else:
                     print("ERROR: unclear item type")
         f.close()

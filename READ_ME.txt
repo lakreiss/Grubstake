@@ -13,8 +13,8 @@ to determine the amount of food to serve
 
 
 THINGS TO DO IN THE FUTURE
-multiplies for different units
-options ****
+multipliers for different units
+options *****
 GUI *****
 differentiate breakfast, dinner, misc.
 make order input mechanical from text file

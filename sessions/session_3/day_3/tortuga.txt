@@ -1,8 +1,22 @@
 counselor_name tortuga, dropoff_day 4, dropoff_time 1100, item_name_list ['stir_fry', 'veggies_and_hummus'], num_people 10.0, pickup_day 3, pickup_time 1430, session 3, unit_name the hill
 
 SUPPLIES
-stove 1.0
-mixing_spoon 1.0
-matches 1.0
-pot 1.0
 propane 2.0
+pot 1.0
+stove 1.0
+matches 1.0
+mixing_spoon 1.0
+
+INGREDIENTS
+hummus 10
+cooking_oil 1
+ramen 5
+vegetables 1
+celery 1
+carrots 1
+chicken 1
+soy_sauce 10
+
+PER PERSON SUPPLIES
+fork 10
+plate 10
