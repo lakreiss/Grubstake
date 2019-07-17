@@ -1,4 +1,4 @@
-import tkinter as tk, gui, sys
+import tkinter as tk, gui, sys, math
 
 class GUI:
     def __init__(self):
@@ -25,14 +25,19 @@ class GUI:
         label_list = []
         label_counter = 0
         num_labels = len(units_list)
+        labels_per_line = 5
+        num_lines = math.ceil(num_labels / labels_per_line)
 
+        x_step = self.window_w / (labels_per_line)
+        y_step = self.window_h / (num_labels / num_lines)
         for i in range(num_labels):
-            frame_list.append(tk.Frame(screen, width = (self.window_w / num_labels) - (2 * num_labels), height = self.window_h - 2))
+            frame_list.append(tk.Frame(screen, width = x_step, height = y_step))
             frame_list[i].propagate(False)
-            frame_list[i].grid(row = round(i / 5), column = round(i % 5), sticky = "nsew", padx = 2, pady = 2)
+            frame_list[i].place(x = round((i % labels_per_line) * x_step), y = round((i // labels_per_line) * y_step))
 
             enter_order_label = tk.Label(frame_list[label_counter], text=units_list[i], compound="c")
-            enter_order_label.bind("<Button>", lambda e: self.open_choose_counselor_gui(screen, frame_list, label_list, order_info, units_list[i]))
+            # enter_order_label.bind("<Button-" + str(i + 1) + ">", lambda e: self.open_choose_counselor_gui(screen, frame_list, label_list, order_info, units_list[i]))
+            enter_order_label.bind("<Button>", lambda e, unit_name=units_list[i]: self.open_choose_counselor_gui(screen, frame_list, label_list, order_info, unit_name))
             enter_order_label.pack(expand=True, fill="both")
             label_list.append(enter_order_label)
             label_counter += 1
@@ -72,10 +77,11 @@ class GUI:
         label_counter = 0
         num_labels = 2
 
+        x_step = self.window_w / num_labels
         for i in range(num_labels):
             frame_list.append(tk.Frame(main_screen, width = (self.window_w / num_labels) - (2 * num_labels), height = self.window_h - 2))
             frame_list[i].propagate(False)
-            frame_list[i].grid(row = 0, column = i, sticky = "nsew", padx = 2, pady = 2)
+            frame_list[i].place(x = i * x_step, y = 0)
 
         enter_order_label = tk.Label(frame_list[label_counter], text="Enter Orders", compound="c")
         enter_order_label.bind("<Button>", lambda e: self.open_enter_order_gui(screen, frame_list, label_list))
