@@ -28,16 +28,18 @@ class GUI:
         labels_per_line = 5
         num_lines = math.ceil(num_labels / labels_per_line)
 
-        x_step = self.window_w / (labels_per_line)
-        y_step = self.window_h / (num_labels / num_lines)
+        border = 2
+        x_step = (self.window_w / (labels_per_line)) - border
+        y_step = self.window_h / num_lines - border
         for i in range(num_labels):
             frame_list.append(tk.Frame(screen, width = x_step, height = y_step))
             frame_list[i].propagate(False)
-            frame_list[i].place(x = round((i % labels_per_line) * x_step), y = round((i // labels_per_line) * y_step))
+            frame_list[i].place(x = round((i % labels_per_line) * (x_step + 2)), y = round((i // labels_per_line) * (y_step + 2)))
 
             enter_order_label = tk.Label(frame_list[label_counter], text=units_list[i], compound="c")
             # enter_order_label.bind("<Button-" + str(i + 1) + ">", lambda e: self.open_choose_counselor_gui(screen, frame_list, label_list, order_info, units_list[i]))
             enter_order_label.bind("<Button>", lambda e, unit_name=units_list[i]: self.open_choose_counselor_gui(screen, frame_list, label_list, order_info, unit_name))
+            enter_order_label.config(bg="gray")
             enter_order_label.pack(expand=True, fill="both")
             label_list.append(enter_order_label)
             label_counter += 1
