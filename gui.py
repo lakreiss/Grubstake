@@ -2,14 +2,54 @@ import tkinter as tk, gui, sys
 
 class GUI:
     def __init__(self):
+        self.units_file_name = "camp_info/units.txt"
         self.open_main_menu_gui()
 
-    def open_enter_order_gui(self, screen, frame_list, label_list):
+    def get_units_list(self):
+        f = open(self.units_file_name, "r")
+        fl = f.readlines()
+        units_list = []
+        for line in fl:
+            units_list += [line.lower().replace(" ", "_").replace("\n", "")]
+        return units_list
+
+    def open_enter_order_gui(self, screen, frame_list, label_list, order_info={}):
         #TODO
         for frame in frame_list:
             frame.destroy()
+
+        #get list of units
+        units_list = self.get_units_list()
+
+        frame_list = []
+        label_list = []
+        label_counter = 0
+        num_labels = len(units_list)
+
+        for i in range(num_labels):
+            frame_list.append(tk.Frame(screen, width = (self.window_w / num_labels) - (2 * num_labels), height = self.window_h - 2))
+            frame_list[i].propagate(False)
+            frame_list[i].grid(row = round(i / 5), column = round(i % 5), sticky = "nsew", padx = 2, pady = 2)
+
+            enter_order_label = tk.Label(frame_list[label_counter], text=units_list[i], compound="c")
+            enter_order_label.bind("<Button>", lambda e: self.open_choose_counselor_gui(screen, frame_list, label_list, order_info, units_list[i]))
+            enter_order_label.pack(expand=True, fill="both")
+            label_list.append(enter_order_label)
+            label_counter += 1
+
         # screen.quit()
-        print("hello, world")
+        print("enter order clicked")
+
+    def open_choose_counselor_gui(self, screen, frame_list, label_list, order_info, counselor=""):
+        order_info["counselor"] = counselor
+        print(counselor)
+
+    def open_view_orders_gui(self, screen, frame_list, label_list):
+        #TODO
+        # for frame in frame_list:
+        #     frame.destroy()
+        # screen.quit()
+        print("view orders clicked")
 
     def open_main_menu_gui(self, screen="", frame_list=""):
         if (frame_list is not ""):
@@ -22,7 +62,6 @@ class GUI:
 
         self.screen_w, self.screen_h = main_screen.winfo_screenwidth(), main_screen.winfo_screenheight()
         self.window_w, self.window_h = self.screen_w / 2, self.screen_h / 2
-        self.pixel = tk.PhotoImage(width=1, height=1)
 
         #set window size
         main_screen.geometry("%dx%d+0+0" % (self.window_w, self.window_h))
@@ -38,16 +77,18 @@ class GUI:
             frame_list[i].propagate(False)
             frame_list[i].grid(row = 0, column = i, sticky = "nsew", padx = 2, pady = 2)
 
-        enter_order_label = tk.Label(frame_list[label_counter], text="Enter Orders", width=100, height=100, compound="center")
+        enter_order_label = tk.Label(frame_list[label_counter], text="Enter Orders", compound="c")
         enter_order_label.bind("<Button>", lambda e: self.open_enter_order_gui(screen, frame_list, label_list))
         enter_order_label.pack(expand=True, fill="both")
         label_list.append(enter_order_label)
         label_counter += 1
 
-        view_orders_label = tk.Label(frame_list[label_counter], text="View Orders", image=self.pixel, compound="c")
-        view_orders_label.pack(expand=True, fill="both")
-        label_list.append(view_orders_label)
+        view_order_label = tk.Label(frame_list[label_counter], text="View Orders", compound="c")
+        view_order_label.bind("<Button>", lambda e: self.open_view_orders_gui(screen, frame_list, label_list))
+        view_order_label.pack(expand=True, fill="both")
+        label_list.append(view_order_label)
         label_counter += 1
+
 
         # main_screen.resizable(width=False, height=False)
         main_screen.mainloop()
