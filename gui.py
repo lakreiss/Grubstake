@@ -37,10 +37,6 @@ class GUI:
 
         return frontend_list, backend_list, color_list
 
-    def enter_order_gui(self, screen, frame_list, label_list, order_info={}):
-        #broke this up into two parts for naming clarity
-        self.choose_unit_gui(screen, frame_list, label_list, order_info)
-
     def choose_unit_gui(self, screen, frame_list, label_list, order_info):
         screen_name = "Choose Unit"
 
@@ -167,7 +163,7 @@ class GUI:
 
         self.make_multi_click_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, same_page_func, prev_page_func)
 
-    #TODO: fix and implement
+    #TODO: improve for more complicated options-entries (already made text file)
     def choose_options_gui(self, screen, frame_list, label_list, order_info, item_list):
         order_info["item_list"] = item_list
         print(item_list)
@@ -221,6 +217,10 @@ class GUI:
             self.choose_unit_gui(screen, frame_list, label_list, order_info)
         else:
             print("ERROR IN CONFIRMATION PAGE")
+
+    def choose_view_day_gui(self, screen, frame_list, label_list, view_info):
+        #TODO
+        return
 
     def make_one_click_gui(self, screen, text, old_frames, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func, text_height=20):
         for frame in old_frames:
@@ -346,13 +346,6 @@ class GUI:
         option_label.pack(expand=True, fill="both")
         label_list.append(option_label)
 
-    def view_orders_gui(self, screen, frame_list, label_list):
-        #TODO
-        # for frame in frame_list:
-        #     frame.destroy()
-        # screen.quit()
-        print("view orders clicked")
-
     def main_menu_gui(self, new_menu=True, screen="", frame_list="", label_list=""):
 
         if new_menu:
@@ -399,3 +392,11 @@ class GUI:
         if new_menu:
             # main_screen.resizable(width=False, height=False)
             main_screen.mainloop()
+
+    def enter_order_gui(self, screen, frame_list, label_list, order_info={}):
+        #broke this up into two parts for naming clarity
+        self.choose_unit_gui(screen, frame_list, label_list, order_info)
+
+    def view_orders_gui(self, screen, frame_list, label_list, view_info={}):
+        #broke this up into two parts for naming clarity
+        self.choose_view_day_gui(screen, frame_list, label_list, view_info)
