@@ -36,6 +36,19 @@ class GUI:
 
         return counselor_list_frontend, counselor_list_backend, color_list
 
+    def open_enter_order_gui_2(self, screen, frame_list, label_list, order_info={}):
+
+        for frame in frame_list:
+            frame.destroy()
+
+        unit_list_frontend, unit_list_backend, unit_colors = self.get_unit_list_and_colors()
+
+        next_page_func = lambda screen, frame_list, label_list, order_info, unit_name: self.open_choose_counselor_gui(screen, frame_list, label_list, order_info, unit_name)
+        prev_page_func = lambda screen, frame_list, label_list, order_info: self.open_main_menu_gui(False, screen, frame_list, label_list)
+
+        self.make_gui(screen, unit_list_frontend, unit_list_backend, unit_colors, order_info, next_page_func, prev_page_func)
+
+
     def open_enter_order_gui(self, screen, frame_list, label_list, order_info={}):
         #TODO
         for frame in frame_list:
@@ -95,7 +108,7 @@ class GUI:
 
 
 
-    def make_gui(self, screen, frontend_list, backend_list, color_list, next_page_func, prev_page_func):
+    def make_gui(self, screen, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func):
         frame_list = []
         label_list = []
         num_options = len(frontend_list)
@@ -112,7 +125,7 @@ class GUI:
             frame_list[i].place(x = round((i % labels_per_line) * (x_step + 2)), y = round((i // labels_per_line) * (y_step + 2)))
 
             option_label = tk.Label(frame_list[i], text=frontend_list[i], compound="c")
-            option_label.bind("<Button>", lambda e, backend_name=backend_list[i]: next_page_func(self, screen, frame_list, label_list, order_info, backend_name))
+            option_label.bind("<Button>", lambda e, backend_name=backend_list[i]: next_page_func(screen, frame_list, label_list, order_info, backend_name))
             option_label.config(bg=color_list[i])
             option_label.pack(expand=True, fill="both")
             label_list.append(option_label)
@@ -124,7 +137,7 @@ class GUI:
         frame_list[i].place(x = round((i % labels_per_line) * (x_step + 2)), y = round((i // labels_per_line) * (y_step + 2)))
 
         option_label = tk.Label(frame_list[i], text="Return", compound="c")
-        option_label.bind("<Button>", lambda e: self.open_main_menu_gui(False, screen, frame_list, label_list))
+        option_label.bind("<Button>", lambda e: self.prev_page_func(screen, frame_list, label_list, order_info))
         option_label.config(bg="red")
         option_label.pack(expand=True, fill="both")
         label_list.append(option_label)
@@ -167,7 +180,7 @@ class GUI:
             frame_list[i].place(x = i * x_step, y = 0)
 
         enter_order_label = tk.Label(frame_list[label_counter], text="Enter Orders", compound="c")
-        enter_order_label.bind("<Button>", lambda e: self.open_enter_order_gui(screen, frame_list, label_list))
+        enter_order_label.bind("<Button>", lambda e: self.open_enter_order_gui_2(screen, frame_list, label_list))
         enter_order_label.pack(expand=True, fill="both")
         label_list.append(enter_order_label)
         label_counter += 1
