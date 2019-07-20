@@ -3,12 +3,12 @@ import tkinter as tk, gui, sys, math
 class GUI:
     def __init__(self):
         self.units_file_name = "camp_info/units.txt"
+        self.units_folder_name = "camp_info/units/"
         self.open_main_menu_gui()
 
     #returns a frontend list and backend list of units, along with unit colors
     def get_unit_list_and_colors(self):
-        units_file_name = "camp_info/units.txt"
-        f = open(units_file_name, "r")
+        f = open(self.units_file_name, "r")
         fl = f.readlines()
         unit_list_frontend = []
         unit_list_backend = []
@@ -20,6 +20,21 @@ class GUI:
             color_list += [color.lower().replace(" ", "").replace("\n", "")]
 
         return unit_list_frontend, unit_list_backend, color_list
+
+    def get_counselor_list_and_colors(self, backend_unit_name):
+        counselor_file_name = self.units_folder_name + backend_unit_name + ".txt"
+        f = open(counselor_file_name, "r")
+        fl = f.readlines()
+        counselor_list_frontend = []
+        counselor_list_backend = []
+        color_list = []
+        for line in fl:
+            counselor, color = line.split("-")
+            counselor_list_frontend += [counselor]
+            counselor_list_backend += [counselor.lower().replace(" ", "_").replace("\n", "")]
+            color_list += [color.lower().replace(" ", "").replace("\n", "")]
+
+        return counselor_list_frontend, counselor_list_backend, color_list
 
     def open_enter_order_gui(self, screen, frame_list, label_list, order_info={}):
         #TODO
@@ -68,9 +83,52 @@ class GUI:
         # screen.quit()
         print("enter order clicked")
 
-    def open_choose_counselor_gui(self, screen, frame_list, label_list, order_info, counselor=""):
-        order_info["counselor"] = counselor
-        print(counselor)
+    def open_choose_counselor_gui(self, screen, frame_list, label_list, order_info, unit):
+        order_info["unit"] = unit
+        print(unit)
+
+        for frame in frame_list:
+            frame.destroy()
+
+        #get list of counselors
+        counselor_list_frontend, counselor_list_backend, counselor_colors = self.get_counselor_list_and_colors(unit)
+
+
+
+    def make_gui(self, screen, frontend_list, backend_list, color_list, next_page_func, prev_page_func):
+        frame_list = []
+        label_list = []
+        num_options = len(frontend_list)
+        num_labels = num_options + 1
+        labels_per_line = 4
+        num_lines = math.ceil(num_labels / labels_per_line)
+
+        border = 2
+        x_step = (self.window_w / (labels_per_line)) - border
+        y_step = self.window_h / num_lines - border
+        for i in range(num_options):
+            frame_list.append(tk.Frame(screen, width = x_step, height = y_step))
+            frame_list[i].propagate(False)
+            frame_list[i].place(x = round((i % labels_per_line) * (x_step + 2)), y = round((i // labels_per_line) * (y_step + 2)))
+
+            option_label = tk.Label(frame_list[i], text=frontend_list[i], compound="c")
+            option_label.bind("<Button>", lambda e, backend_name=backend_list[i]: next_page_func(self, screen, frame_list, label_list, order_info, backend_name))
+            option_label.config(bg=color_list[i])
+            option_label.pack(expand=True, fill="both")
+            label_list.append(option_label)
+
+        #back button
+        frame_list.append(tk.Frame(screen, width = x_step, height = y_step))
+        i = len(frame_list) - 1
+        frame_list[i].propagate(False)
+        frame_list[i].place(x = round((i % labels_per_line) * (x_step + 2)), y = round((i // labels_per_line) * (y_step + 2)))
+
+        option_label = tk.Label(frame_list[i], text="Return", compound="c")
+        option_label.bind("<Button>", lambda e: self.open_main_menu_gui(False, screen, frame_list, label_list))
+        option_label.config(bg="red")
+        option_label.pack(expand=True, fill="both")
+        label_list.append(option_label)
+        i += 1
 
     def open_view_orders_gui(self, screen, frame_list, label_list):
         #TODO
