@@ -1,0 +1,1 @@
+counselor ripple, drop_off_day 4, drop_off_time 1:30pm, item_list ['bagels', 'chips_and_salsa', 'french_toast', "s'mores", 'quesadillas', 'veggies_and_hummus'], needs_options True, num_people 36, pickup_day 4, pickup_time 1:30pm, session 4, unit cit

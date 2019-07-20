@@ -1,0 +1,48 @@
+counselor RIPPLE
+drop_off_day 4
+drop_off_time 1:30PM
+item_list ['BAGELS', 'CHIPS_AND_SALSA', 'FRENCH_TOAST', "S'MORES", 'QUESADILLAS', 'VEGGIES_AND_HUMMUS']
+needs_options TRUE
+num_people 36
+pickup_day 4
+pickup_time 1:30PM
+session 4
+unit CIT
+
+SUPPLIES
+matches 1
+pan 2
+propane 2
+roasting_sticks 5
+spatula 2
+stove 1
+
+fork 36
+knife 36
+plate 36
+
+INGREDIENTS
+bagels 8
+beans 2
+bread 4
+butter 4
+carrots 4
+celery 4
+cheese 4
+chicken 4
+chips 4
+chocolate 6
+cream_cheese 36
+graham_crackers 4
+guacamole 4
+hummus 36
+jam 36
+liquid_egg 4
+marshmallows 2
+onion 4
+salsa 8
+sausage 72
+sun_butter 36
+syrup 36
+tomato 8
+tortilla 36

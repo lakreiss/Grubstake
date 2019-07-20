@@ -207,7 +207,7 @@ class GUI:
         frontend_list, backend_list, color_list = self.get_list_and_colors(path)
 
         next_page_func = lambda screen, frame_list, label_list, order_info, answer: self.make_order(screen, frame_list, label_list, order_info, answer)
-        prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_items_gui(screen, frame_list, label_list, order_info, order_info["item_list"])
+        prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_options_gui(screen, frame_list, label_list, order_info, order_info["item_list"])
 
         self.make_one_click_gui(screen, screen_text, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func, text_height=text_height)
 
