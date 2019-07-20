@@ -8,6 +8,7 @@ class GUI:
         self.pickup_day_file_name = "camp_info/pickup_days.txt"
         self.time_options_file_name = "camp_info/time_options.txt"
         self.drop_off_day_file_name = "camp_info/drop_off_days.txt"
+        self.num_people_options_file_name = "camp_info/num_people_options.txt"
 
         self.main_menu_gui()
 
@@ -48,7 +49,7 @@ class GUI:
         next_page_func = lambda screen, frame_list, label_list, order_info, unit_name: self.choose_counselor_gui(screen, frame_list, label_list, order_info, unit_name)
         prev_page_func = lambda screen, frame_list, label_list, order_info: self.main_menu_gui(False, screen, frame_list, label_list)
 
-        self.make_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
+        self.make_one_click_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
 
     def choose_counselor_gui(self, screen, frame_list, label_list, order_info, unit):
         order_info["unit"] = unit
@@ -63,7 +64,7 @@ class GUI:
         next_page_func = lambda screen, frame_list, label_list, order_info, counselor: self.choose_session_gui(screen, frame_list, label_list, order_info, counselor)
         prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_unit_gui(screen, frame_list, label_list, order_info)
 
-        self.make_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
+        self.make_one_click_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
 
     def choose_session_gui(self, screen, frame_list, label_list, order_info, counselor):
         order_info["counselor"] = counselor
@@ -78,7 +79,7 @@ class GUI:
         next_page_func = lambda screen, frame_list, label_list, order_info, session: self.choose_pickup_day_gui(screen, frame_list, label_list, order_info, session)
         prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_counselor_gui(screen, frame_list, label_list, order_info, order_info["unit"])
 
-        self.make_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
+        self.make_one_click_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
 
     def choose_pickup_day_gui(self, screen, frame_list, label_list, order_info, session):
         order_info["session"] = session
@@ -93,7 +94,7 @@ class GUI:
         next_page_func = lambda screen, frame_list, label_list, order_info, pickup_day: self.choose_pickup_time_gui(screen, frame_list, label_list, order_info, pickup_day)
         prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_session_gui(screen, frame_list, label_list, order_info, order_info["counselor"])
 
-        self.make_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
+        self.make_one_click_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
 
     def choose_pickup_time_gui(self, screen, frame_list, label_list, order_info, pickup_day):
         order_info["pickup_day"] = pickup_day
@@ -106,22 +107,24 @@ class GUI:
         frontend_list, backend_list, color_list = self.get_list_and_colors(path)
 
         next_page_func = lambda screen, frame_list, label_list, order_info, pickup_time: self.choose_drop_off_day_gui(screen, frame_list, label_list, order_info, pickup_time)
-        prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_pickup_day_gui(screen, frame_list, label_list, order_info, order_info["pickup_day"])
+        prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_pickup_day_gui(screen, frame_list, label_list, order_info, order_info["session"])
 
-        self.make_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
+        self.make_one_click_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
 
     def choose_drop_off_day_gui(self, screen, frame_list, label_list, order_info, pickup_time):
         order_info["pickup_time"] = pickup_time
         print(pickup_time)
+
+        screen_name = "Choose Drop-Off Day"
 
         #get list of sessions
         path = self.drop_off_day_file_name
         frontend_list, backend_list, color_list = self.get_list_and_colors(path)
 
         next_page_func = lambda screen, frame_list, label_list, order_info, drop_off_day: self.choose_drop_off_time_gui(screen, frame_list, label_list, order_info, drop_off_day)
-        prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_pickup_time_gui(screen, frame_list, label_list, order_info, order_info["pickup_time"])
+        prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_pickup_time_gui(screen, frame_list, label_list, order_info, order_info["pickup_day"])
 
-        self.make_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
+        self.make_one_click_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
 
     def choose_drop_off_time_gui(self, screen, frame_list, label_list, order_info, drop_off_day):
         order_info["drop_off_day"] = drop_off_day
@@ -134,11 +137,26 @@ class GUI:
         frontend_list, backend_list, color_list = self.get_list_and_colors(path)
 
         next_page_func = lambda screen, frame_list, label_list, order_info, drop_off_day: self.choose_number_of_people(screen, frame_list, label_list, order_info, drop_off_day)
-        prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_pickup_time_gui(screen, frame_list, label_list, order_info, order_info["pickup_time"])
+        prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_drop_off_day_gui(screen, frame_list, label_list, order_info, order_info["pickup_time"])
 
-        self.make_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
+        self.make_one_click_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
 
-    def make_gui(self, screen, screen_name, old_frames, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func):
+    def choose_number_of_people(self, screen, frame_list, label_list, order_info, drop_off_time):
+        order_info["drop_off_time"] = drop_off_time
+        print(drop_off_time)
+
+        screen_name = "Choose Number of People"
+
+        #get list of sessions
+        path = self.num_people_options_file_name
+        frontend_list, backend_list, color_list = self.get_list_and_colors(path)
+
+        next_page_func = lambda screen, frame_list, label_list, order_info, drop_off_time: self.choose_items(screen, frame_list, label_list, order_info, drop_off_time, items_chosen=[])
+        prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_drop_off_time_gui(screen, frame_list, label_list, order_info, order_info["drop_off_day"])
+
+        self.make_one_click_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
+
+    def make_one_click_gui(self, screen, screen_name, old_frames, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func):
         for frame in old_frames:
             frame.destroy()
 
