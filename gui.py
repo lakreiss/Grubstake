@@ -6,6 +6,9 @@ class GUI:
         self.units_folder_name = "camp_info/units/"
         self.sessions_file_name = "camp_info/sessions.txt"
         self.pickup_day_file_name = "camp_info/pickup_days.txt"
+        self.time_options_file_name = "camp_info/time_options.txt"
+        self.drop_off_day_file_name = "camp_info/drop_off_days.txt"
+
         self.main_menu_gui()
 
     #returns a frontend list and backend list, along with colors
@@ -37,7 +40,9 @@ class GUI:
         self.choose_unit_gui(screen, frame_list, label_list, order_info)
 
     def choose_unit_gui(self, screen, frame_list, label_list, order_info):
-        frontend_list, backend_list, color_list = self.get_list_and_colors(self.units_file_name)
+
+        path = self.units_file_name
+        frontend_list, backend_list, color_list = self.get_list_and_colors(path)
 
         next_page_func = lambda screen, frame_list, label_list, order_info, unit_name: self.choose_counselor_gui(screen, frame_list, label_list, order_info, unit_name)
         prev_page_func = lambda screen, frame_list, label_list, order_info: self.main_menu_gui(False, screen, frame_list, label_list)
@@ -83,6 +88,45 @@ class GUI:
 
         self.make_gui(screen, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
 
+    def choose_pickup_time_gui(self, screen, frame_list, label_list, order_info, pickup_day):
+        order_info["pickup_day"] = pickup_day
+        print(pickup_day)
+
+        #get list of sessions
+        path = self.time_options_file_name
+        frontend_list, backend_list, color_list = self.get_list_and_colors(path)
+
+        next_page_func = lambda screen, frame_list, label_list, order_info, pickup_time: self.choose_drop_off_day_gui(screen, frame_list, label_list, order_info, pickup_time)
+        prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_pickup_day_gui(screen, frame_list, label_list, order_info, order_info["pickup_day"])
+
+        self.make_gui(screen, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
+
+    def choose_drop_off_day_gui(self, screen, frame_list, label_list, order_info, pickup_time):
+        order_info["pickup_time"] = pickup_time
+        print(pickup_time)
+
+        #get list of sessions
+        path = self.drop_off_day_file_name
+        frontend_list, backend_list, color_list = self.get_list_and_colors(path)
+
+        next_page_func = lambda screen, frame_list, label_list, order_info, drop_off_day: self.choose_drop_off_time_gui(screen, frame_list, label_list, order_info, drop_off_day)
+        prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_pickup_time_gui(screen, frame_list, label_list, order_info, order_info["pickup_time"])
+
+        self.make_gui(screen, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
+
+    def choose_drop_off_time_gui(self, screen, frame_list, label_list, order_info, drop_off_day):
+        order_info["drop_off_day"] = drop_off_day
+        print(drop_off_day)
+
+        #get list of sessions
+        path = self.time_options_file_name
+        frontend_list, backend_list, color_list = self.get_list_and_colors(path)
+
+        next_page_func = lambda screen, frame_list, label_list, order_info, drop_off_day: self.choose_number_of_people(screen, frame_list, label_list, order_info, drop_off_day)
+        prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_pickup_time_gui(screen, frame_list, label_list, order_info, order_info["pickup_time"])
+
+        self.make_gui(screen, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
+
     def make_gui(self, screen, old_frames, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func):
         for frame in old_frames:
             frame.destroy()
@@ -95,6 +139,7 @@ class GUI:
         num_lines = math.ceil(num_labels / labels_per_line)
 
         border = 2
+        # labels_height = self.window_h - 20 #save space for title
         x_step = (self.window_w / (labels_per_line)) - border
         y_step = self.window_h / num_lines - border
         for i in range(num_options):

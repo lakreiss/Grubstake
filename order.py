@@ -6,16 +6,17 @@ class Order:
     overnight_day = 2
     order_info = {} #contains counselor_name, unit_name, item_name_list, num_people, session, pickup_day, pickup_time, dropoff_day, dropoff_time
 
-    def __init__(self, unit_name, counselor_name, item_list, num_people, session=cur_session, pickup_day=overnight_day, pickup_time="2:30", dropoff_day=(overnight_day+1), dropoff_time="11:00"):
-        self.order_info["unit_name"] = unit_name
-        self.order_info["counselor_name"] = counselor_name
-        self.order_info["item_name_list"] = item_list
+    def __init__(self, unit_name, counselor_name, item_list, num_people, session=cur_session, pickup_day=overnight_day, pickup_time="2:30", dropoff_day=(overnight_day+1), dropoff_time="11:00", needs_options=False):
+        self.order_info["unit"] = unit_name
+        self.order_info["counselor"] = counselor_name
+        self.order_info["item_list"] = item_list
         self.order_info["num_people"] = int(num_people)
         self.order_info["session"] = session
         self.order_info["pickup_day"] = pickup_day
         self.order_info["pickup_time"] = pickup_time
         self.order_info["drop_off_day"] = dropoff_day
         self.order_info["drop_off_time"] = dropoff_time
+        self.order_info["needs_options"] = needs_options
         self.log_order()
 
     #only used for debugging
