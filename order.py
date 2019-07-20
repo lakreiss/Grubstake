@@ -32,7 +32,7 @@ class Order:
     def log_order(self):
         #THIS SECTION IS FOR THE ENTIRE DAY'S LOG -- ALL CABINS CONTRIBUTE TO THIS LOG
         #makes a folder if folder doesn't already exist
-        session_log_file_name = "sessions/session_" + str(self.order_info["session"])
+        session_log_file_name = "orders/session_" + str(self.order_info["session"])
         if not os.path.exists(session_log_file_name):
             os.makedirs(session_log_file_name)
         #makes the file name
