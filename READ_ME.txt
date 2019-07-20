@@ -18,3 +18,5 @@ options *****
 GUI *****
 differentiate breakfast, dinner, misc.
 make order input mechanical from text file
+make times 15 minute intervals/more times
+allow pickups a different session

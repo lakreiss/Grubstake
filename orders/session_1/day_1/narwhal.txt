@@ -1,0 +1,21 @@
+counselor NARWHAL
+drop_off_day 1
+drop_off_time 9:00AM
+item_list ['BAGELS']
+needs_options FALSE
+num_people 1
+pickup_day 1
+pickup_time 9:00AM
+session 1
+unit MILKY_WAY
+
+SUPPLIES
+
+knife 1
+plate 1
+
+INGREDIENTS
+bagels 1
+cream_cheese 1
+jam 1
+sun_butter 1

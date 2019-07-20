@@ -4,11 +4,11 @@ import sys, math, os
 class Order:
     cur_session = 3
     overnight_day = 2
-    order_info = {} #contains counselor_name, unit_name, item_name_list, num_people, session, pickup_day, pickup_time, dropoff_day, dropoff_time
+    order_info = {} #contains counselor, unit, item_list, num_people, session, pickup_day, pickup_time, dropoff_day, dropoff_time
 
-    def __init__(self, unit_name, counselor_name, item_list, num_people, session=cur_session, pickup_day=overnight_day, pickup_time="2:30", dropoff_day=(overnight_day+1), dropoff_time="11:00", needs_options=False):
-        self.order_info["unit"] = unit_name
-        self.order_info["counselor"] = counselor_name
+    def __init__(self, unit, counselor, item_list, num_people, session=cur_session, pickup_day=overnight_day, pickup_time="2:30", dropoff_day=(overnight_day+1), dropoff_time="11:00", needs_options=False):
+        self.order_info["unit"] = unit
+        self.order_info["counselor"] = counselor
         self.order_info["item_list"] = item_list
         self.order_info["num_people"] = int(num_people)
         self.order_info["session"] = session
@@ -21,8 +21,8 @@ class Order:
 
     #only used for debugging
     def get_order_needs(self):
-        for item_name in self.order_info["item_name_list"]:
-            meal = Meal(item_name)
+        for item in self.order_info["item_list"]:
+            meal = Meal(item)
             meal_supplies = meal.get_supplies()
             meal_ingredients = meal.get_ingredients()
             meal_people = meal.get_people()
@@ -32,22 +32,22 @@ class Order:
     def log_order(self):
         #THIS SECTION IS FOR THE ENTIRE DAY'S LOG -- ALL CABINS CONTRIBUTE TO THIS LOG
         #makes a folder if folder doesn't already exist
-        session_log_file_name = "orders/session_" + str(self.order_info["session"])
-        if not os.path.exists(session_log_file_name):
-            os.makedirs(session_log_file_name)
+        session_log_file = "orders/session_" + str(self.order_info["session"])
+        if not os.path.exists(session_log_file):
+            os.makedirs(session_log_file)
         #makes the file name
-        day_log_file_name = session_log_file_name + "/day_" + str(self.order_info["pickup_day"]) + ".txt"
-        day_file = open(day_log_file_name, "a")
+        day_log_file = session_log_file + "/day_" + str(self.order_info["pickup_day"]) + ".txt"
+        day_file = open(day_log_file, "a")
 
         self.log_day_file(day_file)
 
         #THIS SECTION IS ONLY FOR ONE CABIN'S LOG -- EACH CABIN HAS THEIR OWN FILE
         #makes a folder if folder doesn't already exist
-        cabin_log_folder_name = session_log_file_name + "/day_" + str(self.order_info["pickup_day"])
-        if not os.path.exists(cabin_log_folder_name):
-            os.makedirs(cabin_log_folder_name)
-        cabin_log_file_name = cabin_log_folder_name + "/" + str(self.order_info["counselor_name"]) + ".txt"
-        cabin_file = open(cabin_log_file_name, "w")
+        cabin_log_folder = session_log_file + "/day_" + str(self.order_info["pickup_day"])
+        if not os.path.exists(cabin_log_folder):
+            os.makedirs(cabin_log_folder)
+        cabin_log_file = cabin_log_folder + "/" + str(self.order_info["counselor"]) + ".txt"
+        cabin_file = open(cabin_log_file, "w")
 
         self.log_cabin_file(cabin_file)
 
@@ -81,8 +81,8 @@ class Order:
 
         #collect all meals
         all_meals = []
-        for item_name in self.order_info["item_name_list"]:
-            meal = Meal(item_name)
+        for item in self.order_info["item_list"]:
+            meal = Meal(item)
             all_meals += [meal]
 
         #calculate all supplies and ingredients
@@ -94,7 +94,7 @@ class Order:
             meal_ingredients = meal.get_ingredients()
             meal_pp = meal.get_per_person_supplies()
             meal_people = meal.get_people()
-            # print(meal.meal_name)
+            # print(meal.meal)
             # print(meal_supplies)
             # print(meal_ingredients)
             # print(meal_people)

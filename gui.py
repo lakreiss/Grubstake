@@ -1,4 +1,4 @@
-import tkinter as tk, gui, sys, math
+import tkinter as tk, gui, sys, math, order
 
 class GUI:
     def __init__(self):
@@ -9,7 +9,8 @@ class GUI:
         self.time_options_file_name = "camp_info/time_options.txt"
         self.drop_off_day_file_name = "camp_info/drop_off_days.txt"
         self.num_people_options_file_name = "camp_info/num_people_options.txt"
-
+        self.boolean_options_file_name = "camp_info/boolean_options.txt"
+        self.menu_options_file_name = "meals/all_meals.txt"
         self.main_menu_gui()
 
     #returns a frontend list and backend list, along with colors
@@ -57,7 +58,6 @@ class GUI:
 
         screen_name = "Choose Counselor"
 
-        #get list of counselors
         path = self.units_folder_name + unit + ".txt"
         frontend_list, backend_list, color_list = self.get_list_and_colors(path)
 
@@ -72,7 +72,6 @@ class GUI:
 
         screen_name = "Choose Session"
 
-        #get list of sessions
         path = self.sessions_file_name
         frontend_list, backend_list, color_list = self.get_list_and_colors(path)
 
@@ -87,7 +86,6 @@ class GUI:
 
         screen_name = "Choose Pickup Day"
 
-        #get list of sessions
         path = self.pickup_day_file_name
         frontend_list, backend_list, color_list = self.get_list_and_colors(path)
 
@@ -102,7 +100,6 @@ class GUI:
 
         screen_name = "Choose Pickup Time"
 
-        #get list of sessions
         path = self.time_options_file_name
         frontend_list, backend_list, color_list = self.get_list_and_colors(path)
 
@@ -117,7 +114,6 @@ class GUI:
 
         screen_name = "Choose Drop-Off Day"
 
-        #get list of sessions
         path = self.drop_off_day_file_name
         frontend_list, backend_list, color_list = self.get_list_and_colors(path)
 
@@ -132,7 +128,6 @@ class GUI:
 
         screen_name = "Choose Drop-Off Time"
 
-        #get list of sessions
         path = self.time_options_file_name
         frontend_list, backend_list, color_list = self.get_list_and_colors(path)
 
@@ -147,16 +142,87 @@ class GUI:
 
         screen_name = "Choose Number of People"
 
-        #get list of sessions
         path = self.num_people_options_file_name
         frontend_list, backend_list, color_list = self.get_list_and_colors(path)
 
-        next_page_func = lambda screen, frame_list, label_list, order_info, drop_off_time: self.choose_items(screen, frame_list, label_list, order_info, drop_off_time, items_chosen=[])
+        next_page_func = lambda screen, frame_list, label_list, order_info, drop_off_time: self.choose_items_gui(screen, frame_list, label_list, order_info, drop_off_time)
         prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_drop_off_time_gui(screen, frame_list, label_list, order_info, order_info["drop_off_day"])
 
         self.make_one_click_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
 
-    def make_one_click_gui(self, screen, screen_name, old_frames, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func):
+    def choose_items_gui(self, screen, frame_list, label_list, order_info, num_people):
+        order_info["num_people"] = num_people
+        print(num_people)
+
+        screen_name = "Choose Items"
+
+        path = self.menu_options_file_name
+        frontend_list, backend_list, color_list = self.get_list_and_colors(path)
+
+        items_chosen = []
+
+        next_page_func = lambda screen, frame_list, label_list, order_info, item_list: self.choose_options_gui(screen, frame_list, label_list, order_info, item_list)
+        same_page_func = lambda screen, frame_list, label_list, order_info, items_chosen, chosen_item: self.make_multi_click_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, same_page_func, prev_page_func, items_chosen, chosen_item)
+        prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_number_of_people(screen, frame_list, label_list, order_info, order_info["drop_off_time"])
+
+        self.make_multi_click_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, same_page_func, prev_page_func)
+
+    #TODO: fix and implement
+    def choose_options_gui(self, screen, frame_list, label_list, order_info, item_list):
+        order_info["item_list"] = item_list
+        print(item_list)
+
+        screen_name = "Are There Options?"
+
+        path = self.boolean_options_file_name
+        frontend_list, backend_list, color_list = self.get_list_and_colors(path)
+
+        next_page_func = lambda screen, frame_list, label_list, order_info, options: self.confirmation_page_gui(screen, frame_list, label_list, order_info, options)
+        prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_items_gui(screen, frame_list, label_list, order_info, order_info["num_people"])
+
+        self.make_one_click_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
+
+    def confirmation_page_gui(self, screen, frame_list, label_list, order_info, options):
+        if options == "yes":
+            order_info["needs_options"] = True
+        elif options == "no":
+            order_info["needs_options"] = False
+        else:
+            print("ERROR IN OPTIONS")
+        print(order_info["needs_options"])
+
+        all_keys = []
+        for key in order_info:
+            all_keys += [key]
+        all_keys.sort()
+
+        screen_text = "\nHere's what I have for your order so far:\n\n"
+        for key in all_keys:
+            screen_text += key.replace("_", " ") + " = " + str(order_info[key]).replace("_", " ") + "\n"
+
+        screen_text += "\nIs this correct?\n"
+        text_height = 20 * (len(order_info) + 3)
+
+        path = self.boolean_options_file_name
+        frontend_list, backend_list, color_list = self.get_list_and_colors(path)
+
+        next_page_func = lambda screen, frame_list, label_list, order_info, answer: self.make_order(screen, frame_list, label_list, order_info, answer)
+        prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_items_gui(screen, frame_list, label_list, order_info, order_info["item_list"])
+
+        self.make_one_click_gui(screen, screen_text, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func, text_height=text_height)
+
+    def make_order(self, screen, frame_list, label_list, order_info, answer):
+        if answer == "yes":
+            #Make order TODO
+            print(order_info)
+            order.Order(order_info["unit"], order_info["counselor"], order_info["item_list"], order_info["num_people"], order_info["session"], order_info["pickup_day"], order_info["pickup_time"], order_info["drop_off_day"], order_info["drop_off_time"], order_info["needs_options"])
+            self.main_menu_gui(False, screen, frame_list, label_list)
+        elif answer == "no":
+            self.choose_unit_gui(screen, frame_list, label_list, order_info)
+        else:
+            print("ERROR IN CONFIRMATION PAGE")
+
+    def make_one_click_gui(self, screen, text, old_frames, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func, text_height=20):
         for frame in old_frames:
             frame.destroy()
 
@@ -168,7 +234,7 @@ class GUI:
         num_lines = math.ceil(num_labels / labels_per_line)
 
         border = 2
-        title_height = 20
+        title_height = text_height
         labels_height = self.window_h - title_height #save space for title
         x_step = (self.window_w / (labels_per_line)) - border
         y_step = labels_height / num_lines - border
@@ -193,6 +259,79 @@ class GUI:
         option_label = tk.Label(frame_list[i], text="Return", compound="c")
         option_label.bind("<Button>", lambda e: prev_page_func(screen, frame_list, label_list, order_info))
         option_label.config(bg="red")
+        option_label.pack(expand=True, fill="both")
+        label_list.append(option_label)
+
+        #title/instructions
+        frame_list.append(tk.Frame(screen, width = self.window_w, height = title_height))
+        i = len(frame_list) - 1
+        frame_list[i].propagate(False)
+        frame_list[i].place(x = 0, y = 0)
+
+        option_label = tk.Label(frame_list[i], text=text, compound="c")
+        # option_label.config(bg="red")
+        option_label.pack(expand=True, fill="both")
+        label_list.append(option_label)
+
+    def make_multi_click_gui(self, screen, screen_name, old_frames, frontend_list, backend_list, color_list, order_info, next_page_func, same_page_func, prev_page_func, items_chosen=[], chosen_item=""):
+        if chosen_item is not "":
+            if chosen_item in items_chosen:
+                #TODO remove item
+                pass
+            else:
+                items_chosen += [chosen_item]
+
+        for frame in old_frames:
+            frame.destroy()
+
+        frame_list = []
+        label_list = []
+        num_options = len(frontend_list)
+        num_labels = num_options + 1
+        labels_per_line = 4
+        num_lines = math.ceil(num_labels / labels_per_line)
+
+        border = 2
+        title_height = 20
+        labels_height = self.window_h - title_height #save space for title
+        x_step = (self.window_w / (labels_per_line)) - border
+        y_step = labels_height / num_lines - border
+
+        for i in range(num_options):
+            frame_list.append(tk.Frame(screen, width = x_step, height = y_step))
+            frame_list[i].propagate(False)
+            frame_list[i].place(x = round((i % labels_per_line) * (x_step + 2)), y = round((i // labels_per_line) * (y_step + 2)) + title_height)
+
+            option_label = tk.Label(frame_list[i], text=frontend_list[i], compound="c")
+            option_label.bind("<Button>", lambda e, backend_name=backend_list[i]: same_page_func(screen, frame_list, label_list, order_info, items_chosen, backend_name))
+            if (backend_list[i] in items_chosen):
+                option_label.config(bg="gray")
+            else:
+                option_label.config(bg=color_list[i])
+            option_label.pack(expand=True, fill="both")
+            label_list.append(option_label)
+
+        #back button
+        frame_list.append(tk.Frame(screen, width = x_step, height = y_step))
+        i = len(frame_list) - 1
+        frame_list[i].propagate(False)
+        frame_list[i].place(x = round((i % labels_per_line) * (x_step + 2)), y = round((i // labels_per_line) * (y_step + 2)) + title_height)
+
+        option_label = tk.Label(frame_list[i], text="Return", compound="c")
+        option_label.bind("<Button>", lambda e: prev_page_func(screen, frame_list, label_list, order_info))
+        option_label.config(bg="red")
+        option_label.pack(expand=True, fill="both")
+        label_list.append(option_label)
+
+        #done button
+        frame_list.append(tk.Frame(screen, width = x_step, height = y_step))
+        i = len(frame_list) - 1
+        frame_list[i].propagate(False)
+        frame_list[i].place(x = round((i % labels_per_line) * (x_step + 2)), y = round((i // labels_per_line) * (y_step + 2)) + title_height)
+
+        option_label = tk.Label(frame_list[i], text="Done", compound="c")
+        option_label.bind("<Button>", lambda e, item_list=items_chosen: next_page_func(screen, frame_list, label_list, order_info, item_list))
+        option_label.config(bg="green")
         option_label.pack(expand=True, fill="both")
         label_list.append(option_label)
 
