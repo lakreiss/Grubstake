@@ -5,6 +5,7 @@ class GUI:
         self.units_file_name = "camp_info/units.txt"
         self.units_folder_name = "camp_info/units/"
         self.sessions_file_name = "camp_info/sessions.txt"
+        self.pickup_day_file_name = "camp_info/pickup_days.txt"
         self.main_menu_gui()
 
     #returns a frontend list and backend list, along with colors
@@ -12,36 +13,36 @@ class GUI:
     def get_list_and_colors(self, path):
         f = open(path, "r")
         fl = f.readlines()
-        list_frontend = []
-        list_backend = []
+        frontend_list = []
+        backend_list = []
         color_list = []
         for line in fl:
             if ("-") in line:
                 unit, color = line.split("-")
-                list_frontend += [unit]
-                list_backend += [unit.lower().replace(" ", "_").replace("\n", "")]
+                frontend_list += [unit]
+                backend_list += [unit.lower().replace(" ", "_").replace("\n", "")]
                 color_list += [color.lower().replace(" ", "").replace("\n", "")]
             else:
                 #default is gray
                 unit = line
                 color = "gray"
-                list_frontend += [unit]
-                list_backend += [unit.lower().replace(" ", "_").replace("\n", "")]
+                frontend_list += [unit]
+                backend_list += [unit.lower().replace(" ", "_").replace("\n", "")]
                 color_list += [color]
 
-        return list_frontend, list_backend, color_list
+        return frontend_list, backend_list, color_list
 
     def enter_order_gui(self, screen, frame_list, label_list, order_info={}):
+        #broke this up into two parts for naming clarity
         self.choose_unit_gui(screen, frame_list, label_list, order_info)
 
-
     def choose_unit_gui(self, screen, frame_list, label_list, order_info):
-        unit_list_frontend, unit_list_backend, unit_colors = self.get_list_and_colors(self.units_file_name)
+        frontend_list, backend_list, color_list = self.get_list_and_colors(self.units_file_name)
 
         next_page_func = lambda screen, frame_list, label_list, order_info, unit_name: self.choose_counselor_gui(screen, frame_list, label_list, order_info, unit_name)
         prev_page_func = lambda screen, frame_list, label_list, order_info: self.main_menu_gui(False, screen, frame_list, label_list)
 
-        self.make_gui(screen, frame_list, unit_list_frontend, unit_list_backend, unit_colors, order_info, next_page_func, prev_page_func)
+        self.make_gui(screen, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
 
     def choose_counselor_gui(self, screen, frame_list, label_list, order_info, unit):
         order_info["unit"] = unit
@@ -49,12 +50,12 @@ class GUI:
 
         #get list of counselors
         path = self.units_folder_name + unit + ".txt"
-        counselor_list_frontend, counselor_list_backend, counselor_colors = self.get_list_and_colors(path)
+        frontend_list, backend_list, color_list = self.get_list_and_colors(path)
 
         next_page_func = lambda screen, frame_list, label_list, order_info, counselor: self.choose_session_gui(screen, frame_list, label_list, order_info, counselor)
         prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_unit_gui(screen, frame_list, label_list, order_info)
 
-        self.make_gui(screen, frame_list, counselor_list_frontend, counselor_list_backend, counselor_colors, order_info, next_page_func, prev_page_func)
+        self.make_gui(screen, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
 
     def choose_session_gui(self, screen, frame_list, label_list, order_info, counselor):
         order_info["counselor"] = counselor
@@ -62,10 +63,25 @@ class GUI:
 
         #get list of sessions
         path = self.sessions_file_name
-        counselor_list_frontend, counselor_list_backend, counselor_colors = self.get_list_and_colors(path)
+        frontend_list, backend_list, color_list = self.get_list_and_colors(path)
 
-        next_page_func = lambda screen, frame_list, label_list, order_info, counselor: self.choose_session_gui(screen, frame_list, label_list, order_info, counselor)
-        prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_unit_gui(screen, frame_list, label_list, order_info)
+        next_page_func = lambda screen, frame_list, label_list, order_info, session: self.choose_pickup_day_gui(screen, frame_list, label_list, order_info, session)
+        prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_counselor_gui(screen, frame_list, label_list, order_info, order_info["unit"])
+
+        self.make_gui(screen, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
+
+    def choose_pickup_day_gui(self, screen, frame_list, label_list, order_info, session):
+        order_info["session"] = session
+        print(session)
+
+        #get list of sessions
+        path = self.pickup_day_file_name
+        frontend_list, backend_list, color_list = self.get_list_and_colors(path)
+
+        next_page_func = lambda screen, frame_list, label_list, order_info, pickup_day: self.choose_pickup_time_gui(screen, frame_list, label_list, order_info, pickup_day)
+        prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_session_gui(screen, frame_list, label_list, order_info, order_info["counselor"])
+
+        self.make_gui(screen, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
 
     def make_gui(self, screen, old_frames, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func):
         for frame in old_frames:
@@ -161,11 +177,11 @@ class GUI:
     def enter_order_gui_OLD(self, screen, frame_list, label_list, order_info={}):
 
         #get list of units
-        unit_list_frontend, unit_list_backend, unit_colors = self.get_list_and_colors(self.units_file_name)
+        unit_frontend_list, unit_backend_list, unit_colors = self.get_list_and_colors(self.units_file_name)
 
         frame_list = []
         label_list = []
-        num_units = len(unit_list_frontend)
+        num_units = len(unit_frontend_list)
         num_labels = num_units + 1
         labels_per_line = 4
         num_lines = math.ceil(num_labels / labels_per_line)
@@ -178,9 +194,9 @@ class GUI:
             frame_list[i].propagate(False)
             frame_list[i].place(x = round((i % labels_per_line) * (x_step + 2)), y = round((i // labels_per_line) * (y_step + 2)))
 
-            enter_order_label = tk.Label(frame_list[i], text=unit_list_frontend[i], compound="c")
-            # enter_order_label.bind("<Button-" + str(i + 1) + ">", lambda e: self.choose_counselor_gui(screen, frame_list, label_list, order_info, unit_list_frontend[i]))
-            enter_order_label.bind("<Button>", lambda e, unit_name=unit_list_backend[i]: self.choose_counselor_gui(screen, frame_list, label_list, order_info, unit_name))
+            enter_order_label = tk.Label(frame_list[i], text=unit_frontend_list[i], compound="c")
+            # enter_order_label.bind("<Button-" + str(i + 1) + ">", lambda e: self.choose_counselor_gui(screen, frame_list, label_list, order_info, unit_frontend_list[i]))
+            enter_order_label.bind("<Button>", lambda e, unit_name=unit_backend_list[i]: self.choose_counselor_gui(screen, frame_list, label_list, order_info, unit_name))
             enter_order_label.config(bg=unit_colors[i])
             enter_order_label.pack(expand=True, fill="both")
             label_list.append(enter_order_label)
@@ -192,7 +208,7 @@ class GUI:
         frame_list[i].place(x = round((i % labels_per_line) * (x_step + 2)), y = round((i // labels_per_line) * (y_step + 2)))
 
         enter_order_label = tk.Label(frame_list[i], text="Return", compound="c")
-        # enter_order_label.bind("<Button-" + str(i + 1) + ">", lambda e: self.choose_counselor_gui(screen, frame_list, label_list, order_info, unit_list_frontend[i]))
+        # enter_order_label.bind("<Button-" + str(i + 1) + ">", lambda e: self.choose_counselor_gui(screen, frame_list, label_list, order_info, unit_frontend_list[i]))
         enter_order_label.bind("<Button>", lambda e: self.main_menu_gui(False, screen, frame_list, label_list))
         enter_order_label.config(bg="red")
         enter_order_label.pack(expand=True, fill="both")
