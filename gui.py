@@ -245,12 +245,14 @@ class GUI:
 
         enter_order_label = tk.Label(frame_list[label_counter], text="Enter Orders", compound="c")
         enter_order_label.bind("<Button>", lambda e: self.enter_order_gui(screen, frame_list, label_list))
+        enter_order_label.config(bg="lightblue")
         enter_order_label.pack(expand=True, fill="both")
         label_list.append(enter_order_label)
         label_counter += 1
 
         view_order_label = tk.Label(frame_list[label_counter], text="View Orders", compound="c")
         view_order_label.bind("<Button>", lambda e: self.view_orders_gui(screen, frame_list, label_list))
+        view_order_label.config(bg="lightgreen")
         view_order_label.pack(expand=True, fill="both")
         label_list.append(view_order_label)
         label_counter += 1
