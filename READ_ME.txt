@@ -15,8 +15,22 @@ to determine the amount of food to serve
 THINGS TO DO IN THE FUTURE
 multipliers for different units
 options *****
+  make option types and numbers
+    -use multi-select function
+    -for each option selected, choose num_people
 GUI *****
 differentiate breakfast, dinner, misc.
 make order input mechanical from text file
 make times 15 minute intervals/more times
 allow pickups a different session
+
+GRUBSTAKE LAYOUT
+main_menu -> enter order -> choose unit -> choose counselor -> session -> pickup day -> pickup time -> drop off day -> drop off time -> num people -> choose items -> options -> confirmation -> main menu
+        '--> view orders -> choose day -> schedule (cabins) -> ingredients
+                                     '--> ingredients
+
+
+things to view:
+schedule of pickup times with cabins
+each cabin's ingredients
+each day's ingredients

@@ -1,0 +1,14 @@
+Gluten Free
+Dairy Free
+Vegetarian
+Vegan
+Nut Free
+Egg Free
+Gluten Free and Dairy Free
+Gluten Free and Vegetarian
+Gluten Free and Vegan
+Gluten Free and Egg Free
+Dairy Free and Vegetarian
+Dairy Free and Vegan
+Dairy Free and Egg Free
+Vegetarian and Egg Free
