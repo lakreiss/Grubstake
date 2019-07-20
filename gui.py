@@ -40,6 +40,7 @@ class GUI:
         self.choose_unit_gui(screen, frame_list, label_list, order_info)
 
     def choose_unit_gui(self, screen, frame_list, label_list, order_info):
+        screen_name = "Choose Unit"
 
         path = self.units_file_name
         frontend_list, backend_list, color_list = self.get_list_and_colors(path)
@@ -47,11 +48,13 @@ class GUI:
         next_page_func = lambda screen, frame_list, label_list, order_info, unit_name: self.choose_counselor_gui(screen, frame_list, label_list, order_info, unit_name)
         prev_page_func = lambda screen, frame_list, label_list, order_info: self.main_menu_gui(False, screen, frame_list, label_list)
 
-        self.make_gui(screen, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
+        self.make_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
 
     def choose_counselor_gui(self, screen, frame_list, label_list, order_info, unit):
         order_info["unit"] = unit
         print(unit)
+
+        screen_name = "Choose Counselor"
 
         #get list of counselors
         path = self.units_folder_name + unit + ".txt"
@@ -60,11 +63,13 @@ class GUI:
         next_page_func = lambda screen, frame_list, label_list, order_info, counselor: self.choose_session_gui(screen, frame_list, label_list, order_info, counselor)
         prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_unit_gui(screen, frame_list, label_list, order_info)
 
-        self.make_gui(screen, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
+        self.make_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
 
     def choose_session_gui(self, screen, frame_list, label_list, order_info, counselor):
         order_info["counselor"] = counselor
         print(counselor)
+
+        screen_name = "Choose Session"
 
         #get list of sessions
         path = self.sessions_file_name
@@ -73,11 +78,13 @@ class GUI:
         next_page_func = lambda screen, frame_list, label_list, order_info, session: self.choose_pickup_day_gui(screen, frame_list, label_list, order_info, session)
         prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_counselor_gui(screen, frame_list, label_list, order_info, order_info["unit"])
 
-        self.make_gui(screen, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
+        self.make_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
 
     def choose_pickup_day_gui(self, screen, frame_list, label_list, order_info, session):
         order_info["session"] = session
         print(session)
+
+        screen_name = "Choose Pickup Day"
 
         #get list of sessions
         path = self.pickup_day_file_name
@@ -86,11 +93,13 @@ class GUI:
         next_page_func = lambda screen, frame_list, label_list, order_info, pickup_day: self.choose_pickup_time_gui(screen, frame_list, label_list, order_info, pickup_day)
         prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_session_gui(screen, frame_list, label_list, order_info, order_info["counselor"])
 
-        self.make_gui(screen, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
+        self.make_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
 
     def choose_pickup_time_gui(self, screen, frame_list, label_list, order_info, pickup_day):
         order_info["pickup_day"] = pickup_day
         print(pickup_day)
+
+        screen_name = "Choose Pickup Time"
 
         #get list of sessions
         path = self.time_options_file_name
@@ -99,7 +108,7 @@ class GUI:
         next_page_func = lambda screen, frame_list, label_list, order_info, pickup_time: self.choose_drop_off_day_gui(screen, frame_list, label_list, order_info, pickup_time)
         prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_pickup_day_gui(screen, frame_list, label_list, order_info, order_info["pickup_day"])
 
-        self.make_gui(screen, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
+        self.make_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
 
     def choose_drop_off_day_gui(self, screen, frame_list, label_list, order_info, pickup_time):
         order_info["pickup_time"] = pickup_time
@@ -112,11 +121,13 @@ class GUI:
         next_page_func = lambda screen, frame_list, label_list, order_info, drop_off_day: self.choose_drop_off_time_gui(screen, frame_list, label_list, order_info, drop_off_day)
         prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_pickup_time_gui(screen, frame_list, label_list, order_info, order_info["pickup_time"])
 
-        self.make_gui(screen, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
+        self.make_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
 
     def choose_drop_off_time_gui(self, screen, frame_list, label_list, order_info, drop_off_day):
         order_info["drop_off_day"] = drop_off_day
         print(drop_off_day)
+
+        screen_name = "Choose Drop-Off Time"
 
         #get list of sessions
         path = self.time_options_file_name
@@ -125,9 +136,9 @@ class GUI:
         next_page_func = lambda screen, frame_list, label_list, order_info, drop_off_day: self.choose_number_of_people(screen, frame_list, label_list, order_info, drop_off_day)
         prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_pickup_time_gui(screen, frame_list, label_list, order_info, order_info["pickup_time"])
 
-        self.make_gui(screen, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
+        self.make_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func)
 
-    def make_gui(self, screen, old_frames, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func):
+    def make_gui(self, screen, screen_name, old_frames, frontend_list, backend_list, color_list, order_info, next_page_func, prev_page_func):
         for frame in old_frames:
             frame.destroy()
 
@@ -139,13 +150,15 @@ class GUI:
         num_lines = math.ceil(num_labels / labels_per_line)
 
         border = 2
-        # labels_height = self.window_h - 20 #save space for title
+        title_height = 20
+        labels_height = self.window_h - title_height #save space for title
         x_step = (self.window_w / (labels_per_line)) - border
-        y_step = self.window_h / num_lines - border
+        y_step = labels_height / num_lines - border
+
         for i in range(num_options):
             frame_list.append(tk.Frame(screen, width = x_step, height = y_step))
             frame_list[i].propagate(False)
-            frame_list[i].place(x = round((i % labels_per_line) * (x_step + 2)), y = round((i // labels_per_line) * (y_step + 2)))
+            frame_list[i].place(x = round((i % labels_per_line) * (x_step + 2)), y = round((i // labels_per_line) * (y_step + 2)) + title_height)
 
             option_label = tk.Label(frame_list[i], text=frontend_list[i], compound="c")
             option_label.bind("<Button>", lambda e, backend_name=backend_list[i]: next_page_func(screen, frame_list, label_list, order_info, backend_name))
@@ -157,14 +170,24 @@ class GUI:
         frame_list.append(tk.Frame(screen, width = x_step, height = y_step))
         i = len(frame_list) - 1
         frame_list[i].propagate(False)
-        frame_list[i].place(x = round((i % labels_per_line) * (x_step + 2)), y = round((i // labels_per_line) * (y_step + 2)))
+        frame_list[i].place(x = round((i % labels_per_line) * (x_step + 2)), y = round((i // labels_per_line) * (y_step + 2)) + title_height)
 
         option_label = tk.Label(frame_list[i], text="Return", compound="c")
         option_label.bind("<Button>", lambda e: prev_page_func(screen, frame_list, label_list, order_info))
         option_label.config(bg="red")
         option_label.pack(expand=True, fill="both")
         label_list.append(option_label)
-        i += 1
+
+        #title/instructions
+        frame_list.append(tk.Frame(screen, width = self.window_w, height = title_height))
+        i = len(frame_list) - 1
+        frame_list[i].propagate(False)
+        frame_list[i].place(x = 0, y = 0)
+
+        option_label = tk.Label(frame_list[i], text=screen_name, compound="c")
+        # option_label.config(bg="red")
+        option_label.pack(expand=True, fill="both")
+        label_list.append(option_label)
 
     def view_orders_gui(self, screen, frame_list, label_list):
         #TODO
