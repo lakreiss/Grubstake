@@ -1,0 +1,18 @@
+counselor RIPPLE
+drop_off_day 2
+drop_off_time 11:30AM
+item_list ['CHIPS_AND_SALSA']
+needs_options FALSE
+num_people 10
+pickup_day 2
+pickup_time 5:00PM
+session 1
+unit CIT
+
+SUPPLIES
+
+
+INGREDIENTS
+chips 1
+guacamole 1
+salsa 2

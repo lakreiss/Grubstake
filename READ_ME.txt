@@ -25,8 +25,8 @@ allow pickups a different session?
 
 GRUBSTAKE LAYOUT
 main_menu -> enter order -> choose unit -> choose counselor -> session -> pickup day -> pickup time -> drop off day -> drop off time -> num people -> choose items -> options -> confirmation -> main menu
-        '--> view orders -> choose day -> schedule (cabins) -> ingredients
-                                     '--> ingredients
+        '--> view orders -> choose day -> choose schedule or ingredients -> schedule (cabins) -> ingredients
+                                                                      '---> ingredients
 
 
 things to view:
