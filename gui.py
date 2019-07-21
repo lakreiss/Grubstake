@@ -523,20 +523,28 @@ class GUI:
         option_label.pack(expand=True, fill="both")
         label_list.append(option_label)
 
-    def make_multi_path_gui(self, screen, screen_name, old_frames, frontend_list, backend_list, color_list, lambda_list, info={}, text_height=50):
+    def make_multi_path_gui(self, screen, screen_name, old_frames, frontend_list, backend_list, color_list, lambda_list, info={}, text_height=50, return_height=50):
 
         for frame in old_frames:
             frame.destroy()
 
         frame_list = []
         label_list = []
+        has_return_button = "Return" in frontend_list
+        if (has_return_button):
+            return_index = frontend_list.index("Return")
+            return_lambda = lambda_list.pop(return_index)
+            return_frontend = frontend_list.pop(return_index)
+            return_backend = backend_list.pop(return_index)
+        else:
+            return_height = 0
         num_labels = len(frontend_list)
         labels_per_line = min(self.max_labels_per_line, num_labels)
         num_lines = math.ceil(num_labels / labels_per_line)
 
         border = 2
         title_height = text_height
-        labels_height = self.window_h - title_height #save space for title
+        labels_height = self.window_h - title_height - return_height #save space for title
         x_step = (self.window_w / (labels_per_line)) - border
         y_step = labels_height / num_lines - border
 
@@ -548,6 +556,19 @@ class GUI:
             option_label = tk.Label(frame_list[i], text=frontend_list[i], compound="c")
             option_label.bind("<Button>", lambda_list[i](screen, frame_list, label_list))
             option_label.config(bg=color_list[i])
+            option_label.pack(expand=True, fill="both")
+            label_list.append(option_label)
+
+        if (has_return_button):
+            #back button
+            frame_list.append(tk.Frame(screen, width = self.window_w, height = return_height))
+            i = len(frame_list) - 1
+            frame_list[i].propagate(False)
+            frame_list[i].place(x = 0, y = labels_height + title_height)
+
+            option_label = tk.Label(frame_list[i], text=return_frontend, compound="c")
+            option_label.bind("<Button>", return_lambda(screen, frame_list, label_list))
+            option_label.config(bg="red")
             option_label.pack(expand=True, fill="both")
             label_list.append(option_label)
 
