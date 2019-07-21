@@ -1,0 +1,1 @@
+counselor apollo, drop_off_day 3, drop_off_time 3:00pm, item_list ['quesadillas', "s'mores", 'bagels', 'veggies_and_hummus'], needs_options True, num_people 20, pickup_day 2, pickup_time 1:30pm, session 4, unit village_south

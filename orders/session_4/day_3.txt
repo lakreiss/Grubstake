@@ -1,0 +1,1 @@
+counselor puli, drop_off_day 3, drop_off_time 3:30pm, item_list ['quesadillas', 'chips_and_salsa', 'french_toast', 'hot_dogs', 'stir_fry', "s'mores"], needs_options False, num_people 15, pickup_day 3, pickup_time 12:00pm, session 4, unit milky_way

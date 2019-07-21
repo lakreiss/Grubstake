@@ -1,0 +1,54 @@
+counselor PULI
+drop_off_day 3
+drop_off_time 3:30PM
+item_list ['QUESADILLAS', 'CHIPS_AND_SALSA', 'FRENCH_TOAST', 'HOT_DOGS', 'STIR_FRY', "S'MORES"]
+needs_options FALSE
+num_people 15
+pickup_day 3
+pickup_time 12:00PM
+session 4
+unit MILKY_WAY
+
+SUPPLIES
+matches 1
+mixing_spoon 1
+pan 2
+pot 1
+propane 2
+roasting_sticks 5
+spatula 2
+stove 1
+
+fork 15
+knife 15
+plate 15
+
+INGREDIENTS
+baked_beans 3
+beans 1
+bread 2
+buns 15
+butter 2
+cheese 2
+chicken 4
+chips 2
+chocolate 3
+cooking_oil 1
+corn_bread_mix 1
+graham_crackers 2
+guacamole 2
+hot_dogs 15
+ketchup 15
+liquid_egg 2
+marshmallows 1
+mustard 15
+onion 2
+ramen 8
+relish 15
+salsa 3
+sausage 30
+soy_sauce 15
+syrup 15
+tomato 3
+tortilla 15
+vegetables 2

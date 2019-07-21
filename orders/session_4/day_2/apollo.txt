@@ -1,0 +1,40 @@
+counselor APOLLO
+drop_off_day 3
+drop_off_time 3:00PM
+item_list ['QUESADILLAS', "S'MORES", 'BAGELS', 'VEGGIES_AND_HUMMUS']
+needs_options TRUE
+num_people 20
+pickup_day 2
+pickup_time 1:30PM
+session 4
+unit VILLAGE_SOUTH
+
+SUPPLIES
+matches 1
+pan 2
+propane 2
+roasting_sticks 5
+spatula 2
+stove 1
+
+fork 20
+knife 20
+plate 20
+
+INGREDIENTS
+bagels 4
+beans 1
+carrots 2
+celery 2
+cheese 2
+chicken 2
+chocolate 3
+cream_cheese 20
+graham_crackers 2
+hummus 20
+jam 20
+marshmallows 1
+onion 2
+sun_butter 20
+tomato 4
+tortilla 20

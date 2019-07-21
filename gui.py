@@ -1,4 +1,4 @@
-import tkinter as tk, gui, sys, math, order
+import tkinter as tk, gui, sys, math, order, random
 
 class GUI:
     def __init__(self):
@@ -30,7 +30,7 @@ class GUI:
             else:
                 #default is gray
                 unit = line
-                color = "gray"
+                color = self.get_random_color()
                 frontend_list += [unit]
                 backend_list += [unit.lower().replace(" ", "_").replace("\n", "")]
                 color_list += [color]
@@ -372,8 +372,7 @@ class GUI:
             counselors_at_time_slot = self.get_counselors_at_time_slot(backend_list[i], info)
             schedule_text = self.get_schedule_text(frontend_list[i], counselors_at_time_slot)
 
-            #TODO put text at top of frame, not centered
-            option_label = tk.Label(frame_list[i], text=schedule_text, compound="c")
+            option_label = tk.Label(frame_list[i], text=schedule_text, compound="c", anchor="n")
             if len(counselors_at_time_slot) > 0:
                 option_label.bind("<Button>", lambda e, backend_name=backend_list[i], counselors=counselors_at_time_slot: next_page_func(screen, frame_list, label_list, info, backend_name, counselors))
             option_label.config(bg=color_list[i])
@@ -456,8 +455,7 @@ class GUI:
     def make_multi_click_gui(self, screen, screen_name, old_frames, frontend_list, backend_list, color_list, info, next_page_func, same_page_func, prev_page_func, items_chosen=[], chosen_item="", text_height=20, return_height=50):
         if chosen_item is not "":
             if chosen_item in items_chosen:
-                #TODO remove item
-                pass
+                items_chosen.remove(chosen_item)
             else:
                 items_chosen += [chosen_item]
 
@@ -634,8 +632,9 @@ class GUI:
             schedule_text += counselor.replace("_", " ") + "\n"
         return schedule_text
 
-    def get_random_color():
-        #todo
-        color_list = ["lightblue", "blue", "darkblue", "lightred", "red", "darkred", "lightgreen", "green", "darkgreen", "yellow", "orange", "purple", "lilac", "lavender", "turqoise", "gold", "brown", "beige", "aqua"]
-        #get random number in range (0:len(color_list))
-        #return color_list[num]
+    def get_random_color(self):
+        letter_list = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
+        color_name = "#"
+        for i in range(6):
+            color_name += letter_list[random.randint(0, len(letter_list) - 1)]
+        return color_name

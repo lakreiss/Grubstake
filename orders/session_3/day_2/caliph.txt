@@ -1,0 +1,15 @@
+counselor CALIPH
+drop_off_day 3
+drop_off_time 12:00PM
+item_list []
+needs_options FALSE
+num_people 18
+pickup_day 2
+pickup_time 2:30PM
+session 3
+unit VILLAGE_SOUTH
+
+SUPPLIES
+
+
+INGREDIENTS
