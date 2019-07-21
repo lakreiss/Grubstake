@@ -24,6 +24,7 @@ make times 15 minute intervals/more times
 allow pickups a different session?
 improve formatting and converting from backend -> frontend text
   ********
+make options_per_line dependent on number of choices
 
 GRUBSTAKE LAYOUT
 main_menu -> enter order -> choose unit -> choose counselor -> session -> pickup day -> pickup time -> drop off day -> drop off time -> num people -> choose items -> options -> confirmation -> main menu
