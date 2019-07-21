@@ -1,0 +1,37 @@
+counselor TAMBO
+drop_off_day 4
+drop_off_time 3:00PM
+item_list ["S'MORES", 'QUESADILLAS', 'PANCAKES']
+needs_options FALSE
+num_people 16
+pickup_day 3
+pickup_time 3:30PM
+session 3
+unit CIT
+
+SUPPLIES
+matches 1
+pan 2
+propane 2
+roasting_sticks 5
+spatula 2
+stove 1
+
+fork 16
+plate 16
+
+INGREDIENTS
+bacon 32
+beans 1
+butter 2
+cheese 2
+chicken 2
+chocolate 3
+graham_crackers 2
+lil_yami 16
+marshmallows 1
+onion 2
+pancake_mix 1
+syrup 16
+tomato 4
+tortilla 16

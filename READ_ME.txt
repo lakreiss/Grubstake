@@ -31,5 +31,7 @@ main_menu -> enter order -> choose unit -> choose counselor -> session -> pickup
 
 things to view:
 schedule of pickup times with cabins
+  each time slot has its own box, with counselors names in it
+  clicking on the time slot shows you the cabin with their ingredients (and a return button)
 each cabin's ingredients
 each day's ingredients

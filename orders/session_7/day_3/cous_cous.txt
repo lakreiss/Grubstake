@@ -1,0 +1,38 @@
+counselor COUS_COUS
+drop_off_day 3
+drop_off_time 12:00PM
+item_list ['QUESADILLAS', "S'MORES", 'STIR_FRY']
+needs_options FALSE
+num_people 27
+pickup_day 3
+pickup_time 12:00PM
+session 7
+unit CIT
+
+SUPPLIES
+matches 1
+mixing_spoon 1
+pan 2
+pot 1
+propane 2
+roasting_sticks 5
+spatula 2
+stove 1
+
+fork 27
+plate 27
+
+INGREDIENTS
+beans 2
+cheese 3
+chicken 6
+chocolate 5
+cooking_oil 1
+graham_crackers 3
+marshmallows 2
+onion 3
+ramen 14
+soy_sauce 27
+tomato 6
+tortilla 27
+vegetables 3

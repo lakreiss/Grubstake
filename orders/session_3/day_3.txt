@@ -1,11 +1,1 @@
-counselor_name tortuga, dropoff_day 4, dropoff_time 1100, item_name_list ['stir_fry', 'veggies_and_hummus'], num_people 20.0, pickup_day 3, pickup_time 1430, session 3, unit_name the hill
-counselor_name tortuga, dropoff_day 4, dropoff_time 1100, item_name_list ['stir_fry', 'veggies_and_hummus'], num_people 20.0, pickup_day 3, pickup_time 1430, session 3, unit_name the hill
-counselor_name tortuga, dropoff_day 4, dropoff_time 1100, item_name_list ['stir_fry', 'veggies_and_hummus'], num_people 20.0, pickup_day 3, pickup_time 1430, session 3, unit_name the hill
-counselor_name tortuga, drop_off_day 4, drop_off_time 1100, item_name_list ['stir_fry', 'veggies_and_hummus'], num_people 20.0, pickup_day 3, pickup_time 1430, session 3, unit_name the hill
-counselor_name tortuga, drop_off_day 4, drop_off_time 1100, item_name_list ['stir_fry', 'veggies_and_hummus'], num_people 20.0, pickup_day 3, pickup_time 1430, session 3, unit_name the hill
-counselor_name tortuga, drop_off_day 4, drop_off_time 1100, item_name_list ['stir_fry', 'veggies_and_hummus'], num_people 20.0, pickup_day 3, pickup_time 1430, session 3, unit_name the hill
-counselor_name tortuga, drop_off_day 4, drop_off_time 1100, item_name_list ['stir_fry', 'veggies_and_hummus'], num_people 20, pickup_day 3, pickup_time 1430, session 3, unit_name the hill
-counselor_name tortuga, drop_off_day 4, drop_off_time 11:00, item_name_list ['stir_fry', 'veggies_and_hummus'], num_people 20, pickup_day 3, pickup_time 2:30, session 3, unit_name the hill
-counselor_name tortuga, drop_off_day 4, drop_off_time 11:00, item_name_list ['stir_fry', 'veggies_and_hummus'], num_people 20, pickup_day 3, pickup_time 2:30, session 3, unit_name the hill
-counselor_name TORTUGA, drop_off_day 4, drop_off_time 11:00, item_name_list ['STIR_FRY', 'VEGGIES_AND_HUMMUS'], num_people 20, pickup_day 3, pickup_time 2:30, session 3, unit_name THE HILL
-counselor_name tortuga, drop_off_day 4, drop_off_time 11:00, item_name_list ['stir_fry', 'veggies_and_hummus'], num_people 20, pickup_day 3, pickup_time 2:30, session 3, unit_name the hill
+counselor tambo, drop_off_day 4, drop_off_time 3:00pm, item_list ["s'mores", 'quesadillas', 'pancakes'], needs_options False, num_people 16, pickup_day 3, pickup_time 3:30pm, session 3, unit cit

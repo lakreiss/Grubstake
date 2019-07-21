@@ -1,0 +1,42 @@
+counselor ASTRO
+drop_off_day 2
+drop_off_time 3:00PM
+item_list ['STIR_FRY', 'HOT_DOGS', 'FRENCH_TOAST']
+needs_options FALSE
+num_people 23
+pickup_day 2
+pickup_time 2:00PM
+session 7
+unit VILLAGE_SOUTH
+
+SUPPLIES
+matches 1
+mixing_spoon 1
+pan 2
+pot 1
+propane 2
+spatula 1
+stove 1
+
+fork 23
+knife 23
+plate 23
+
+INGREDIENTS
+baked_beans 5
+bread 3
+buns 23
+butter 3
+chicken 3
+cooking_oil 1
+corn_bread_mix 2
+hot_dogs 23
+ketchup 23
+liquid_egg 3
+mustard 23
+ramen 12
+relish 23
+sausage 46
+soy_sauce 23
+syrup 23
+vegetables 3

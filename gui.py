@@ -161,7 +161,7 @@ class GUI:
         same_page_func = lambda screen, frame_list, label_list, order_info, items_chosen, chosen_item: self.make_multi_click_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, same_page_func, prev_page_func, items_chosen, chosen_item)
         prev_page_func = lambda screen, frame_list, label_list, order_info: self.choose_number_of_people(screen, frame_list, label_list, order_info, order_info["drop_off_time"])
 
-        self.make_multi_click_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, same_page_func, prev_page_func)
+        self.make_multi_click_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, order_info, next_page_func, same_page_func, prev_page_func, items_chosen)
 
     #TODO: improve for more complicated options-entries (already made text file)
     def choose_options_gui(self, screen, frame_list, label_list, order_info, item_list):
@@ -209,25 +209,137 @@ class GUI:
 
     def make_order(self, screen, frame_list, label_list, order_info, answer):
         if answer == "yes":
-            #Make order TODO
-            print(order_info)
             order.Order(order_info["unit"], order_info["counselor"], order_info["item_list"], order_info["num_people"], order_info["session"], order_info["pickup_day"], order_info["pickup_time"], order_info["drop_off_day"], order_info["drop_off_time"], order_info["needs_options"])
             self.main_menu_gui(False, screen, frame_list, label_list)
         elif answer == "no":
-            self.choose_unit_gui(screen, frame_list, label_list, order_info)
+            self.choose_unit_gui(screen, frame_list, label_list, {})
         else:
             print("ERROR IN CONFIRMATION PAGE")
 
-    def choose_view_day_gui(self, screen, frame_list, label_list, view_info):
+    def choose_view_session_gui(self, screen, frame_list, label_list, view_info):
+        screen_name = "Choose Session to View"
+
+        path = self.sessions_file_name
+        frontend_list, backend_list, color_list = self.get_list_and_colors(path)
+
+        next_page_func = lambda screen, frame_list, label_list, view_info, choice: self.choose_view_day_gui(screen, frame_list, label_list, view_info, choice)
+        prev_page_func = lambda screen, frame_list, label_list, view_info: self.main_menu_gui(False, screen, frame_list, label_list)
+
+        self.make_one_click_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, view_info, next_page_func, prev_page_func)
+
+    def choose_view_day_gui(self, screen, frame_list, label_list, view_info, session):
+        view_info["session"] = session
+        print(session)
+
         screen_name = "Choose Day to View"
 
         path = self.days_of_session_file_name
         frontend_list, backend_list, color_list = self.get_list_and_colors(path)
 
-        next_page_func = lambda screen, frame_list, label_list, order_info, choice: self.choose_counselor_gui(screen, frame_list, label_list, order_info, choice)
-        prev_page_func = lambda screen, frame_list, label_list, order_info: self.main_menu_gui(False, screen, frame_list, label_list)
+        next_page_func = lambda screen, frame_list, label_list, view_info, choice: self.choose_view_type_gui(screen, frame_list, label_list, view_info, choice)
+        prev_page_func = lambda screen, frame_list, label_list, view_info: self.choose_view_session_gui(screen, frame_list, label_list, view_info)
 
         self.make_one_click_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, view_info, next_page_func, prev_page_func)
+
+    def choose_view_type_gui(self, screen, frame_list, label_list, view_info, day):
+        view_info["day"] = day
+        print(day)
+
+        frontend_list = []
+        backend_list = []
+        color_list = []
+        lambda_list = []
+
+        screen_name = "Would You Like to View Day " + day + "\'s Schedule or Ingredients?"
+        schedule_lambda = lambda screen, frame_list, label_list: lambda e: self.schedule_gui(screen, frame_list, label_list, view_info)
+        ingredients_lambda = lambda screen, frame_list, label_list: lambda e: self.ingredients_gui(screen, frame_list, label_list, view_info)
+        return_lambda = lambda screen, frame_list, label_list: lambda e: self.choose_view_day_gui(screen, frame_list, label_list, view_info, view_info["session"])
+
+        #schedule_gui
+        frontend_list += ["View Schedule"]
+        backend_list += ["view_schedule"]
+        color_list += ["lightblue"]
+        lambda_list += [schedule_lambda]
+
+        #ingredients_gui
+        frontend_list += ["View Ingredients"]
+        backend_list += ["view_ingredients"]
+        color_list += ["lightgreen"]
+        lambda_list += [ingredients_lambda]
+
+        #return_gui
+        frontend_list += ["Return"]
+        backend_list += ["return"]
+        color_list += ["red"]
+        lambda_list += [return_lambda]
+
+        self.make_multi_path_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, lambda_list)
+
+    def schedule_gui(self, screen, frame_list, label_list, view_info):
+        screen_name = "Session " + view_info["session"] + " Day " + view_info["day"] + " Schedule"
+
+        path = self.time_options_file_name
+        frontend_list, backend_list, color_list = self.get_list_and_colors(path)
+
+        next_page_func = lambda screen, frame_list, label_list, view_info, time_slot, counselors_at_time_slot: self.view_ingredients_gui(screen, frame_list, label_list, view_info, time_slot, counselors_at_time_slot)
+        prev_page_func = lambda screen, frame_list, label_list, view_info: self.choose_view_type_gui(screen, frame_list, label_list, view_info, view_info["day"])
+
+        self.make_schedule_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, view_info, next_page_func, prev_page_func)
+
+    #TODO: complete
+    def make_schedule_gui(self, screen, text, old_frames, frontend_list, backend_list, color_list, info, next_page_func, prev_page_func, text_height=20):
+        for frame in old_frames:
+            frame.destroy()
+
+        frame_list = []
+        label_list = []
+        num_options = len(frontend_list)
+        num_labels = num_options + 1
+        labels_per_line = min(self.max_labels_per_line, num_labels)
+        num_lines = math.ceil(num_labels / labels_per_line)
+
+        border = 2
+        title_height = text_height
+        labels_height = self.window_h - title_height #save space for title
+        x_step = (self.window_w / (labels_per_line)) - border
+        y_step = labels_height / num_lines - border
+
+        for i in range(num_options):
+            frame_list.append(tk.Frame(screen, width = x_step, height = y_step))
+            frame_list[i].propagate(False)
+            frame_list[i].place(x = round((i % labels_per_line) * (x_step + 2)), y = round((i // labels_per_line) * (y_step + 2)) + title_height)
+
+            counselors_at_time_slot = self.get_counselors_at_time_slot(backend_list[i], info)
+            schedule_text = self.get_schedule_text(frontend_list[i], counselors_at_time_slot)
+
+            option_label = tk.Label(frame_list[i], text=schedule_text, compound="c")
+            option_label.bind("<Button>", lambda e, backend_name=backend_list[i], counselors=counselors_at_time_slot: next_page_func(screen, frame_list, label_list, info, backend_name, counselors))
+            option_label.config(bg=color_list[i])
+            option_label.pack(expand=True, fill="both")
+            label_list.append(option_label)
+
+        #back button
+        frame_list.append(tk.Frame(screen, width = x_step, height = y_step))
+        i = len(frame_list) - 1
+        frame_list[i].propagate(False)
+        frame_list[i].place(x = round((i % labels_per_line) * (x_step + 2)), y = round((i // labels_per_line) * (y_step + 2)) + title_height)
+
+        option_label = tk.Label(frame_list[i], text="Return", compound="c")
+        option_label.bind("<Button>", lambda e: prev_page_func(screen, frame_list, label_list, info))
+        option_label.config(bg="red")
+        option_label.pack(expand=True, fill="both")
+        label_list.append(option_label)
+
+        #title/instructions
+        frame_list.append(tk.Frame(screen, width = self.window_w, height = title_height))
+        i = len(frame_list) - 1
+        frame_list[i].propagate(False)
+        frame_list[i].place(x = 0, y = 0)
+
+        option_label = tk.Label(frame_list[i], text=text, compound="c")
+        # option_label.config(bg="red")
+        option_label.pack(expand=True, fill="both")
+        label_list.append(option_label)
 
     def make_one_click_gui(self, screen, text, old_frames, frontend_list, backend_list, color_list, info, next_page_func, prev_page_func, text_height=20):
         for frame in old_frames:
@@ -410,7 +522,7 @@ class GUI:
         lambda_list = []
 
         screen_name = "Main Menu"
-        enter_order_lambda = lambda screen, frame_list, label_list: lambda e: self.enter_order_gui(screen, frame_list, label_list)
+        enter_order_lambda = lambda screen, frame_list, label_list: lambda e: self.enter_order_gui(screen, frame_list, label_list, new_order=True)
         view_orders_lambda = lambda screen, frame_list, label_list: lambda e: self.view_orders_gui(screen, frame_list, label_list)
 
         #enter_order_gui
@@ -431,10 +543,41 @@ class GUI:
             # screen.resizable(width=False, height=False)
             screen.mainloop()
 
-    def enter_order_gui(self, screen, frame_list, label_list, order_info={}):
+    def enter_order_gui(self, screen, frame_list, label_list, order_info={}, new_order=False):
         #broke this up into two parts for naming clarity
+        if new_order:
+            order_info = {}
         self.choose_unit_gui(screen, frame_list, label_list, order_info)
 
     def view_orders_gui(self, screen, frame_list, label_list, view_info={}):
         #broke this up into two parts for naming clarity
-        self.choose_view_day_gui(screen, frame_list, label_list, view_info)
+        self.choose_view_session_gui(screen, frame_list, label_list, view_info)
+
+    def get_counselors_at_time_slot(self, time_slot, info):
+        file_path = "orders/session_" + info["session"] + "/day_" + info["day"] + ".txt"
+
+        f = open(file_path, "r")
+        fl = f.readlines()
+        counselor_list = []
+        for line in fl:
+            if ("pickup_time " + time_slot) in line:
+                #hacky way to get the counselor
+                counselor_section, rest = line.split(", drop_off_day")
+                title, counselor = counselor_section.split(" ")
+                counselor_list += [counselor]
+                print("found ", counselor)
+
+        print(counselor_list)
+        return counselor_list
+
+    def get_schedule_text(self, time_slot, counselors_at_time_slot):
+        schedule_text = time_slot
+        for counselor in counselors_at_time_slot:
+            schedule_text += counselor + "\n"
+        return schedule_text
+
+    def get_random_color():
+        #todo
+        color_list = ["lightblue", "blue", "darkblue", "lightred", "red", "darkred", "lightgreen", "green", "darkgreen", "yellow", "orange", "purple", "lilac", "lavender", "turqoise", "gold", "brown", "beige", "aqua"]
+        #get random number in range (0:len(color_list))
+        #return color_list[num]

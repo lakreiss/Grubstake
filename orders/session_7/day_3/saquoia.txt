@@ -1,12 +1,13 @@
-counselor_name CALIPH
+counselor SAQUOIA
 drop_off_day 3
-drop_off_time 11:00
-item_name_list ['QUESADILLAS', 'CHIPS_AND_SALSA', 'SMORES']
+drop_off_time 1:30PM
+item_list ['PANCAKES', 'QUESADILLAS', "S'MORES"]
+needs_options FALSE
 num_people 10
-pickup_day 2
-pickup_time 2:30
-session 3
-unit_name VILLAGE
+pickup_day 3
+pickup_time 1:30PM
+session 7
+unit VILLAGE_SOUTH
 
 SUPPLIES
 matches 1
@@ -20,15 +21,17 @@ fork 10
 plate 10
 
 INGREDIENTS
+bacon 20
 beans 1
+butter 1
 cheese 1
 chicken 1
-chips 1
 chocolate 2
 graham_crackers 1
-guacamole 1
+lil_yami 10
 marshmallows 1
 onion 1
-salsa 2
+pancake_mix 1
+syrup 10
 tomato 2
 tortilla 10

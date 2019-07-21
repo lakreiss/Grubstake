@@ -1,0 +1,32 @@
+counselor WOODY
+drop_off_day 3
+drop_off_time 12:00PM
+item_list ['QUESADILLAS', "S'MORES"]
+needs_options FALSE
+num_people 15
+pickup_day 4
+pickup_time 12:00PM
+session 3
+unit CIT
+
+SUPPLIES
+matches 1
+pan 2
+propane 2
+roasting_sticks 5
+spatula 2
+stove 1
+
+fork 15
+plate 15
+
+INGREDIENTS
+beans 1
+cheese 2
+chicken 2
+chocolate 3
+graham_crackers 2
+marshmallows 1
+onion 2
+tomato 3
+tortilla 15

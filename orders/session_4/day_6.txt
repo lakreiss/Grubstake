@@ -1,0 +1,1 @@
+counselor kiwi, drop_off_day 3, drop_off_time 3:30pm, item_list ['stir_fry', 'hot_dogs', 'french_toast'], needs_options False, num_people 16, pickup_day 6, pickup_time 3:00pm, session 4, unit cit

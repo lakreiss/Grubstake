@@ -1,0 +1,42 @@
+counselor KIWI
+drop_off_day 3
+drop_off_time 3:30PM
+item_list ['STIR_FRY', 'HOT_DOGS', 'FRENCH_TOAST']
+needs_options FALSE
+num_people 16
+pickup_day 6
+pickup_time 3:00PM
+session 4
+unit CIT
+
+SUPPLIES
+matches 1
+mixing_spoon 1
+pan 2
+pot 1
+propane 2
+spatula 1
+stove 1
+
+fork 16
+knife 16
+plate 16
+
+INGREDIENTS
+baked_beans 4
+bread 2
+buns 16
+butter 2
+chicken 2
+cooking_oil 1
+corn_bread_mix 1
+hot_dogs 16
+ketchup 16
+liquid_egg 2
+mustard 16
+ramen 8
+relish 16
+sausage 32
+soy_sauce 16
+syrup 16
+vegetables 2
