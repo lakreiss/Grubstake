@@ -38,6 +38,18 @@ class Order:
             order_needs += line
         return order_needs
 
+    def get_day_needs(session, day):
+        file_path = "orders/session_" + session + "/day_" + day + ".txt"
+        f = open(file_path, "r")
+        fl = f.readlines()
+        # supply_needs = ""
+        # for line in fl:
+        #     if ("supplies" in line):
+        #
+        #     order_needs += line
+        # return order_needs
+        return "this", "that"
+
     def log_order(self):
         #THIS SECTION IS FOR THE ENTIRE DAY'S LOG -- ALL CABINS CONTRIBUTE TO THIS LOG
         #makes a folder if folder doesn't already exist

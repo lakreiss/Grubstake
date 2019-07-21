@@ -232,7 +232,7 @@ class GUI:
 
         screen_name = "Would You Like to View Day " + day + "\'s Schedule or Ingredients?"
         schedule_lambda = lambda screen, frame_list, label_list: lambda e: self.schedule_gui(screen, frame_list, label_list, view_info)
-        ingredients_lambda = lambda screen, frame_list, label_list: lambda e: self.ingredients_gui(screen, frame_list, label_list, view_info)
+        ingredients_lambda = lambda screen, frame_list, label_list: lambda e: self.day_ingredients_gui(screen, frame_list, label_list, view_info)
         return_lambda = lambda screen, frame_list, label_list: lambda e: self.choose_view_day_gui(screen, frame_list, label_list, view_info, view_info["session"])
 
         #schedule_gui
@@ -261,12 +261,12 @@ class GUI:
         path = self.time_options_file_name
         frontend_list, backend_list, color_list = self.get_list_and_colors(path)
 
-        next_page_func = lambda screen, frame_list, label_list, view_info, time_slot, counselors_at_time_slot: self.view_ingredients_gui(screen, frame_list, label_list, view_info, time_slot, counselors_at_time_slot)
+        next_page_func = lambda screen, frame_list, label_list, view_info, time_slot, counselors_at_time_slot: self.time_slot_ingredients_gui(screen, frame_list, label_list, view_info, time_slot, counselors_at_time_slot)
         prev_page_func = lambda screen, frame_list, label_list, view_info: self.choose_view_type_gui(screen, frame_list, label_list, view_info, view_info["day"])
 
         self.make_schedule_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, view_info, next_page_func, prev_page_func)
 
-    def view_ingredients_gui(self, screen, frame_list, label_list, view_info, time_slot, counselors_at_time_slot):
+    def time_slot_ingredients_gui(self, screen, frame_list, label_list, view_info, time_slot, counselors_at_time_slot):
         screen_text = "Here's what you need at " + time_slot + " on Day " + view_info["day"] + ":"
 
         text_list = []
@@ -275,6 +275,16 @@ class GUI:
 
         prev_page_func = lambda screen, frame_list, label_list, view_info: self.schedule_gui(screen, frame_list, label_list, view_info)
 
+        self.make_text_with_return_gui(screen, screen_text, frame_list, view_info, text_list, prev_page_func)
+
+    def day_ingredients_gui(self, screen, frame_list, label_list, view_info):
+        screen_text = "Here's what you need on Day " + view_info["day"] + ":"
+
+        supplies, ingredients = order.Order.get_day_needs(view_info["session"], view_info["day"])
+
+        prev_page_func = lambda screen, frame_list, label_list, view_info: self.choose_view_type_gui(screen, frame_list, label_list, view_info, view_info["day"])
+
+        text_list = [supplies] + [ingredients]
         self.make_text_with_return_gui(screen, screen_text, frame_list, view_info, text_list, prev_page_func)
 
     #*********************END VIEW ORDERS, BEGIN GUI TEMPLATES*********************
