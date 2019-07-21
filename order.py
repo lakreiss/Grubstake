@@ -20,14 +20,23 @@ class Order:
         self.log_order()
 
     #only used for debugging
-    def get_order_needs(self):
-        for item in self.order_info["item_list"]:
-            meal = Meal(item)
-            meal_supplies = meal.get_supplies()
-            meal_ingredients = meal.get_ingredients()
-            meal_people = meal.get_people()
-            meal_per_person_supplies = meal.get_per_person_supplies()
-        return 'get_order_needs complete'
+    # def get_order_needs(self):
+    #     for item in self.order_info["item_list"]:
+    #         meal = Meal(item)
+    #         meal_supplies = meal.get_supplies()
+    #         meal_ingredients = meal.get_ingredients()
+    #         meal_people = meal.get_people()
+    #         meal_per_person_supplies = meal.get_per_person_supplies()
+    #     return 'get_order_needs complete'
+
+    def get_order_needs(counselor, session, day):
+        file_path = "orders/session_" + session + "/day_" + day + "/" + counselor + ".txt"
+        f = open(file_path, "r")
+        fl = f.readlines()
+        order_needs = ""
+        for line in fl:
+            order_needs += line
+        return order_needs
 
     def log_order(self):
         #THIS SECTION IS FOR THE ENTIRE DAY'S LOG -- ALL CABINS CONTRIBUTE TO THIS LOG

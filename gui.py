@@ -286,44 +286,50 @@ class GUI:
 
         self.make_schedule_gui(screen, screen_name, frame_list, frontend_list, backend_list, color_list, view_info, next_page_func, prev_page_func)
 
-    #TODO: complete
-    def make_schedule_gui(self, screen, text, old_frames, frontend_list, backend_list, color_list, info, next_page_func, prev_page_func, text_height=20):
+    def view_ingredients_gui(self, screen, frame_list, label_list, view_info, time_slot, counselors_at_time_slot):
+        screen_text = "Here's what you need at " + time_slot + " on Day " + view_info["day"] + ":"
+
+        text_list = []
+        for counselor in counselors_at_time_slot:
+            text_list += [order.Order.get_order_needs(counselor, view_info["session"], view_info["day"])]
+
+        prev_page_func = lambda screen, frame_list, label_list, view_info: self.schedule_gui(screen, frame_list, label_list, view_info)
+
+        self.make_text_with_return_gui(screen, screen_text, frame_list, view_info, text_list, prev_page_func)
+
+    def make_text_with_return_gui(self, screen, text, old_frames, info, text_list, prev_page_func, text_height=20, return_height=50):
         for frame in old_frames:
             frame.destroy()
 
         frame_list = []
         label_list = []
-        num_options = len(frontend_list)
-        num_labels = num_options + 1
-        labels_per_line = min(self.max_labels_per_line, num_labels)
+        num_options = len(text_list)
+        num_labels = num_options
+        labels_per_line = num_options
         num_lines = math.ceil(num_labels / labels_per_line)
 
         border = 2
         title_height = text_height
-        labels_height = self.window_h - title_height #save space for title
+        labels_height = self.window_h - title_height - return_height #save space for title
         x_step = (self.window_w / (labels_per_line)) - border
         y_step = labels_height / num_lines - border
 
+        #display each counselors' ingredients
         for i in range(num_options):
             frame_list.append(tk.Frame(screen, width = x_step, height = y_step))
             frame_list[i].propagate(False)
             frame_list[i].place(x = round((i % labels_per_line) * (x_step + 2)), y = round((i // labels_per_line) * (y_step + 2)) + title_height)
 
-            counselors_at_time_slot = self.get_counselors_at_time_slot(backend_list[i], info)
-            schedule_text = self.get_schedule_text(frontend_list[i], counselors_at_time_slot)
-
-            #TODO put text at top of frame, not centered
-            option_label = tk.Label(frame_list[i], text=schedule_text, compound="c")
-            option_label.bind("<Button>", lambda e, backend_name=backend_list[i], counselors=counselors_at_time_slot: next_page_func(screen, frame_list, label_list, info, backend_name, counselors))
-            option_label.config(bg=color_list[i])
+            option_label = tk.Label(frame_list[i], text=text_list[i], compound="c")
+            option_label.config(bg="gray")
             option_label.pack(expand=True, fill="both")
             label_list.append(option_label)
 
         #back button
-        frame_list.append(tk.Frame(screen, width = x_step, height = y_step))
+        frame_list.append(tk.Frame(screen, width = self.window_w, height = return_height))
         i = len(frame_list) - 1
         frame_list[i].propagate(False)
-        frame_list[i].place(x = round((i % labels_per_line) * (x_step + 2)), y = round((i // labels_per_line) * (y_step + 2)) + title_height)
+        frame_list[i].place(x = 0, y = labels_height + title_height)
 
         option_label = tk.Label(frame_list[i], text="Return", compound="c")
         option_label.bind("<Button>", lambda e: prev_page_func(screen, frame_list, label_list, info))
@@ -342,20 +348,74 @@ class GUI:
         option_label.pack(expand=True, fill="both")
         label_list.append(option_label)
 
-    def make_one_click_gui(self, screen, text, old_frames, frontend_list, backend_list, color_list, info, next_page_func, prev_page_func, text_height=20):
+    def make_schedule_gui(self, screen, text, old_frames, frontend_list, backend_list, color_list, info, next_page_func, prev_page_func, text_height=20, return_height=50):
         for frame in old_frames:
             frame.destroy()
 
         frame_list = []
         label_list = []
         num_options = len(frontend_list)
-        num_labels = num_options + 1
-        labels_per_line = min(self.max_labels_per_line, num_labels)
-        num_lines = math.ceil(num_labels / labels_per_line)
+        labels_per_line = min(self.max_labels_per_line, num_options)
+        num_lines = math.ceil(num_options / labels_per_line)
 
         border = 2
         title_height = text_height
-        labels_height = self.window_h - title_height #save space for title
+        labels_height = self.window_h - title_height - return_height #save space for title
+        x_step = (self.window_w / (labels_per_line)) - border
+        y_step = labels_height / num_lines - border
+
+        for i in range(num_options):
+            frame_list.append(tk.Frame(screen, width = x_step, height = y_step))
+            frame_list[i].propagate(False)
+            frame_list[i].place(x = round((i % labels_per_line) * (x_step + 2)), y = round((i // labels_per_line) * (y_step + 2)) + title_height)
+
+            counselors_at_time_slot = self.get_counselors_at_time_slot(backend_list[i], info)
+            schedule_text = self.get_schedule_text(frontend_list[i], counselors_at_time_slot)
+
+            #TODO put text at top of frame, not centered
+            option_label = tk.Label(frame_list[i], text=schedule_text, compound="c")
+            if len(counselors_at_time_slot) > 0:
+                option_label.bind("<Button>", lambda e, backend_name=backend_list[i], counselors=counselors_at_time_slot: next_page_func(screen, frame_list, label_list, info, backend_name, counselors))
+            option_label.config(bg=color_list[i])
+            option_label.pack(expand=True, fill="both")
+            label_list.append(option_label)
+
+        #back button
+        frame_list.append(tk.Frame(screen, width = self.window_w, height = return_height))
+        i = len(frame_list) - 1
+        frame_list[i].propagate(False)
+        frame_list[i].place(x = 0, y = labels_height + title_height)
+
+        option_label = tk.Label(frame_list[i], text="Return", compound="c")
+        option_label.bind("<Button>", lambda e: prev_page_func(screen, frame_list, label_list, info))
+        option_label.config(bg="red")
+        option_label.pack(expand=True, fill="both")
+        label_list.append(option_label)
+
+        #title/instructions
+        frame_list.append(tk.Frame(screen, width = self.window_w, height = title_height))
+        i = len(frame_list) - 1
+        frame_list[i].propagate(False)
+        frame_list[i].place(x = 0, y = 0)
+
+        option_label = tk.Label(frame_list[i], text=text, compound="c")
+        # option_label.config(bg="red")
+        option_label.pack(expand=True, fill="both")
+        label_list.append(option_label)
+
+    def make_one_click_gui(self, screen, text, old_frames, frontend_list, backend_list, color_list, info, next_page_func, prev_page_func, text_height=20, return_height=50):
+        for frame in old_frames:
+            frame.destroy()
+
+        frame_list = []
+        label_list = []
+        num_options = len(frontend_list)
+        labels_per_line = min(self.max_labels_per_line, num_options)
+        num_lines = math.ceil(num_options / labels_per_line)
+
+        border = 2
+        title_height = text_height
+        labels_height = self.window_h - title_height - return_height#save space for title
         x_step = (self.window_w / (labels_per_line)) - border
         y_step = labels_height / num_lines - border
 
@@ -371,10 +431,10 @@ class GUI:
             label_list.append(option_label)
 
         #back button
-        frame_list.append(tk.Frame(screen, width = x_step, height = y_step))
+        frame_list.append(tk.Frame(screen, width = self.window_w, height = return_height))
         i = len(frame_list) - 1
         frame_list[i].propagate(False)
-        frame_list[i].place(x = round((i % labels_per_line) * (x_step + 2)), y = round((i // labels_per_line) * (y_step + 2)) + title_height)
+        frame_list[i].place(x = 0, y = labels_height + title_height)
 
         option_label = tk.Label(frame_list[i], text="Return", compound="c")
         option_label.bind("<Button>", lambda e: prev_page_func(screen, frame_list, label_list, info))
@@ -393,7 +453,7 @@ class GUI:
         option_label.pack(expand=True, fill="both")
         label_list.append(option_label)
 
-    def make_multi_click_gui(self, screen, screen_name, old_frames, frontend_list, backend_list, color_list, info, next_page_func, same_page_func, prev_page_func, items_chosen=[], chosen_item="", text_height=20):
+    def make_multi_click_gui(self, screen, screen_name, old_frames, frontend_list, backend_list, color_list, info, next_page_func, same_page_func, prev_page_func, items_chosen=[], chosen_item="", text_height=20, return_height=50):
         if chosen_item is not "":
             if chosen_item in items_chosen:
                 #TODO remove item
@@ -407,13 +467,12 @@ class GUI:
         frame_list = []
         label_list = []
         num_options = len(frontend_list)
-        num_labels = num_options + 1
-        labels_per_line = min(self.max_labels_per_line, num_labels)
-        num_lines = math.ceil(num_labels / labels_per_line)
+        labels_per_line = min(self.max_labels_per_line, num_options)
+        num_lines = math.ceil(num_options / labels_per_line)
 
         border = 2
         title_height = text_height
-        labels_height = self.window_h - title_height #save space for title
+        labels_height = self.window_h - title_height - return_height #save space for title
         x_step = (self.window_w / (labels_per_line)) - border
         y_step = labels_height / num_lines - border
 
@@ -432,10 +491,10 @@ class GUI:
             label_list.append(option_label)
 
         #back button
-        frame_list.append(tk.Frame(screen, width = x_step, height = y_step))
+        frame_list.append(tk.Frame(screen, width = self.window_w / 2 - border, height = return_height))
         i = len(frame_list) - 1
         frame_list[i].propagate(False)
-        frame_list[i].place(x = round((i % labels_per_line) * (x_step + 2)), y = round((i // labels_per_line) * (y_step + 2)) + title_height)
+        frame_list[i].place(x = 0, y = labels_height + title_height)
 
         option_label = tk.Label(frame_list[i], text="Return", compound="c")
         option_label.bind("<Button>", lambda e: prev_page_func(screen, frame_list, label_list, info))
@@ -444,10 +503,10 @@ class GUI:
         label_list.append(option_label)
 
         #done button
-        frame_list.append(tk.Frame(screen, width = x_step, height = y_step))
+        frame_list.append(tk.Frame(screen, width = self.window_w / 2 - border, height = return_height))
         i = len(frame_list) - 1
         frame_list[i].propagate(False)
-        frame_list[i].place(x = round((i % labels_per_line) * (x_step + 2)), y = round((i // labels_per_line) * (y_step + 2)) + title_height)
+        frame_list[i].place(x = self.window_w / 2, y = labels_height + title_height)
 
         option_label = tk.Label(frame_list[i], text="Done", compound="c")
         option_label.bind("<Button>", lambda e, item_list=items_chosen: next_page_func(screen, frame_list, label_list, info, item_list))
@@ -466,7 +525,7 @@ class GUI:
         option_label.pack(expand=True, fill="both")
         label_list.append(option_label)
 
-    def make_multi_path_gui(self, screen, screen_name, old_frames, frontend_list, backend_list, color_list, lambda_list, info={}, text_height=20):
+    def make_multi_path_gui(self, screen, screen_name, old_frames, frontend_list, backend_list, color_list, lambda_list, info={}, text_height=50):
 
         for frame in old_frames:
             frame.destroy()
@@ -512,7 +571,7 @@ class GUI:
             screen.title("Grubstake")
 
             self.screen_w, self.screen_h = screen.winfo_screenwidth(), screen.winfo_screenheight()
-            self.window_w, self.window_h = self.screen_w / 2, self.screen_h / 2
+            self.window_w, self.window_h = self.screen_w  * 2 / 3, self.screen_h - 100
 
             #set window size
             screen.geometry("%dx%d+0+0" % (self.window_w, self.window_h))
@@ -566,9 +625,7 @@ class GUI:
                 counselor_section, rest = line.split(", drop_off_day")
                 title, counselor = counselor_section.split(" ")
                 counselor_list += [counselor]
-                print("found ", counselor)
 
-        print(counselor_list)
         return counselor_list
 
     def get_schedule_text(self, time_slot, counselors_at_time_slot):

@@ -1,0 +1,19 @@
+counselor CALIPH
+drop_off_day 4
+drop_off_time 3:30PM
+item_list ["S'MORES"]
+needs_options TRUE
+num_people 15
+pickup_day 3
+pickup_time 12:00PM
+session 7
+unit VILLAGE_SOUTH
+
+SUPPLIES
+roasting_sticks 5
+
+
+INGREDIENTS
+chocolate 3
+graham_crackers 2
+marshmallows 1
