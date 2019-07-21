@@ -312,6 +312,7 @@ class GUI:
             counselors_at_time_slot = self.get_counselors_at_time_slot(backend_list[i], info)
             schedule_text = self.get_schedule_text(frontend_list[i], counselors_at_time_slot)
 
+            #TODO put text at top of frame, not centered
             option_label = tk.Label(frame_list[i], text=schedule_text, compound="c")
             option_label.bind("<Button>", lambda e, backend_name=backend_list[i], counselors=counselors_at_time_slot: next_page_func(screen, frame_list, label_list, info, backend_name, counselors))
             option_label.config(bg=color_list[i])
@@ -573,7 +574,7 @@ class GUI:
     def get_schedule_text(self, time_slot, counselors_at_time_slot):
         schedule_text = time_slot
         for counselor in counselors_at_time_slot:
-            schedule_text += counselor + "\n"
+            schedule_text += counselor.replace("_", " ") + "\n"
         return schedule_text
 
     def get_random_color():
