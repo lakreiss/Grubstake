@@ -13,29 +13,7 @@ class GUI:
         self.menu_options_file_name = "meals/all_meals.txt"
         self.main_menu_gui()
 
-    #returns a frontend list and backend list, along with colors
-    #text file must have entries of form: name-color
-    def get_list_and_colors(self, path):
-        f = open(path, "r")
-        fl = f.readlines()
-        frontend_list = []
-        backend_list = []
-        color_list = []
-        for line in fl:
-            if ("-") in line:
-                unit, color = line.split("-")
-                frontend_list += [unit]
-                backend_list += [unit.lower().replace(" ", "_").replace("\n", "")]
-                color_list += [color.lower().replace(" ", "").replace("\n", "")]
-            else:
-                #default is gray
-                unit = line
-                color = self.get_random_color()
-                frontend_list += [unit]
-                backend_list += [unit.lower().replace(" ", "_").replace("\n", "")]
-                color_list += [color]
-
-        return frontend_list, backend_list, color_list
+    #*********************END INIT, BEGIN ORDER ENTRY*********************
 
     def choose_unit_gui(self, screen, frame_list, label_list, order_info):
         screen_name = "Choose Unit"
@@ -216,6 +194,8 @@ class GUI:
         else:
             print("ERROR IN CONFIRMATION PAGE")
 
+    #*********************END ORDER ENTRY, BEGIN VIEW ORDERS*********************
+
     def choose_view_session_gui(self, screen, frame_list, label_list, view_info):
         screen_name = "Choose Session to View"
 
@@ -296,6 +276,8 @@ class GUI:
         prev_page_func = lambda screen, frame_list, label_list, view_info: self.schedule_gui(screen, frame_list, label_list, view_info)
 
         self.make_text_with_return_gui(screen, screen_text, frame_list, view_info, text_list, prev_page_func)
+
+    #*********************END VIEW ORDERS, BEGIN GUI TEMPLATES*********************
 
     def make_text_with_return_gui(self, screen, text, old_frames, info, text_list, prev_page_func, text_height=50, return_height=50):
         for frame in old_frames:
@@ -583,6 +565,8 @@ class GUI:
         option_label.pack(expand=True, fill="both")
         label_list.append(option_label)
 
+    #*********************END GUI TEMPLATES, BEGIN MAIN GUIS*********************
+
     def main_menu_gui(self, new_menu=True, screen="", frame_list=[], label_list=[]):
 
         if new_menu:
@@ -632,6 +616,8 @@ class GUI:
         #broke this up into two parts for naming clarity
         self.choose_view_session_gui(screen, frame_list, label_list, view_info)
 
+    #*********************END GUIS, BEGIN BACKEND PROCESSING*********************
+
     def get_counselors_at_time_slot(self, time_slot, info):
         file_path = "orders/session_" + info["session"] + "/day_" + info["day"] + ".txt"
 
@@ -652,6 +638,30 @@ class GUI:
         for counselor in counselors_at_time_slot:
             schedule_text += counselor.replace("_", " ") + "\n"
         return schedule_text
+
+    #returns a frontend list and backend list, along with colors
+    #text file must have entries of form: name-color
+    def get_list_and_colors(self, path):
+        f = open(path, "r")
+        fl = f.readlines()
+        frontend_list = []
+        backend_list = []
+        color_list = []
+        for line in fl:
+            if ("-") in line:
+                unit, color = line.split("-")
+                frontend_list += [unit]
+                backend_list += [unit.lower().replace(" ", "_").replace("\n", "")]
+                color_list += [color.lower().replace(" ", "").replace("\n", "")]
+            else:
+                #default is gray
+                unit = line
+                color = self.get_random_color()
+                frontend_list += [unit]
+                backend_list += [unit.lower().replace(" ", "_").replace("\n", "")]
+                color_list += [color]
+
+        return frontend_list, backend_list, color_list
 
     def get_random_color(self):
         letter_list = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']

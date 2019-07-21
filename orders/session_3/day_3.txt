@@ -1,1 +1,2 @@
 counselor tambo, drop_off_day 4, drop_off_time 3:00pm, item_list ["s'mores", 'quesadillas', 'pancakes'], needs_options False, num_people 16, pickup_day 3, pickup_time 3:30pm, session 3, unit cit
+counselor water_lily, drop_off_day 3, drop_off_time 12:00pm, item_list ['quesadillas', 'chips_and_salsa'], needs_options True, num_people 14, pickup_day 3, pickup_time 12:00pm, session 3, unit misty_mountain

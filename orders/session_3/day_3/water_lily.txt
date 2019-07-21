@@ -1,0 +1,31 @@
+counselor WATER_LILY
+drop_off_day 3
+drop_off_time 12:00PM
+item_list ['QUESADILLAS', 'CHIPS_AND_SALSA']
+needs_options TRUE
+num_people 14
+pickup_day 3
+pickup_time 12:00PM
+session 3
+unit MISTY_MOUNTAIN
+
+SUPPLIES
+matches 1
+pan 2
+propane 2
+spatula 2
+stove 1
+
+fork 14
+plate 14
+
+INGREDIENTS
+beans 1
+cheese 2
+chicken 2
+chips 2
+guacamole 2
+onion 2
+salsa 3
+tomato 3
+tortilla 14
