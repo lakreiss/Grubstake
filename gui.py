@@ -297,7 +297,7 @@ class GUI:
 
         self.make_text_with_return_gui(screen, screen_text, frame_list, view_info, text_list, prev_page_func)
 
-    def make_text_with_return_gui(self, screen, text, old_frames, info, text_list, prev_page_func, text_height=20, return_height=50):
+    def make_text_with_return_gui(self, screen, text, old_frames, info, text_list, prev_page_func, text_height=50, return_height=50):
         for frame in old_frames:
             frame.destroy()
 
@@ -348,7 +348,7 @@ class GUI:
         option_label.pack(expand=True, fill="both")
         label_list.append(option_label)
 
-    def make_schedule_gui(self, screen, text, old_frames, frontend_list, backend_list, color_list, info, next_page_func, prev_page_func, text_height=20, return_height=50):
+    def make_schedule_gui(self, screen, text, old_frames, frontend_list, backend_list, color_list, info, next_page_func, prev_page_func, text_height=50, return_height=50):
         for frame in old_frames:
             frame.destroy()
 
@@ -402,7 +402,7 @@ class GUI:
         option_label.pack(expand=True, fill="both")
         label_list.append(option_label)
 
-    def make_one_click_gui(self, screen, text, old_frames, frontend_list, backend_list, color_list, info, next_page_func, prev_page_func, text_height=20, return_height=50):
+    def make_one_click_gui(self, screen, text, old_frames, frontend_list, backend_list, color_list, info, next_page_func, prev_page_func, text_height=50, return_height=50):
         for frame in old_frames:
             frame.destroy()
 
@@ -452,7 +452,7 @@ class GUI:
         option_label.pack(expand=True, fill="both")
         label_list.append(option_label)
 
-    def make_multi_click_gui(self, screen, screen_name, old_frames, frontend_list, backend_list, color_list, info, next_page_func, same_page_func, prev_page_func, items_chosen=[], chosen_item="", text_height=20, return_height=50):
+    def make_multi_click_gui(self, screen, screen_name, old_frames, frontend_list, backend_list, color_list, info, next_page_func, same_page_func, prev_page_func, items_chosen=[], chosen_item="", text_height=50, return_height=50):
         if chosen_item is not "":
             if chosen_item in items_chosen:
                 items_chosen.remove(chosen_item)

@@ -1,0 +1,41 @@
+counselor MUS
+drop_off_day 3
+drop_off_time 9:30AM
+item_list ['CHIPS_AND_SALSA', "S'MORES", 'QUESADILLAS', 'FRENCH_TOAST']
+needs_options FALSE
+num_people 11
+pickup_day 3
+pickup_time 12:00PM
+session 7
+unit VILLAGE_SOUTH
+
+SUPPLIES
+matches 1
+pan 2
+propane 2
+roasting_sticks 5
+spatula 2
+stove 1
+
+fork 11
+knife 11
+plate 11
+
+INGREDIENTS
+beans 1
+bread 2
+butter 2
+cheese 2
+chicken 2
+chips 2
+chocolate 2
+graham_crackers 2
+guacamole 2
+liquid_egg 2
+marshmallows 1
+onion 2
+salsa 3
+sausage 22
+syrup 11
+tomato 3
+tortilla 11
