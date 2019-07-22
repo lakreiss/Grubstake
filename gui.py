@@ -641,6 +641,7 @@ class GUI:
                 title, counselor = counselor_section.split(" ")
                 counselor_list += [counselor]
 
+        f.close()
         return counselor_list
 
     def get_schedule_text(self, time_slot, counselors_at_time_slot):
@@ -671,6 +672,7 @@ class GUI:
                 backend_list += [unit.lower().replace(" ", "_").replace("\n", "")]
                 color_list += [color]
 
+        f.close()
         return frontend_list, backend_list, color_list
 
     def get_random_color(self):

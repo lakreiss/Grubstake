@@ -1,6 +1,18 @@
 from meal import Meal
 import sys, math, os
 
+def convert_dict_to_string(dict):
+    all_keys = []
+    for key in dict:
+        all_keys += [key]
+    all_keys.sort()
+
+    string_to_return = ""
+    for item in all_keys:
+        string_to_return += item + ": " + str(dict[item]) + "\n"
+
+    return string_to_return
+    
 class Order:
     cur_session = 3
     overnight_day = 2
@@ -36,19 +48,59 @@ class Order:
         order_needs = ""
         for line in fl:
             order_needs += line
+        f.close()
         return order_needs
 
     def get_day_needs(session, day):
         file_path = "orders/session_" + session + "/day_" + day + ".txt"
         f = open(file_path, "r")
         fl = f.readlines()
-        # supply_needs = ""
-        # for line in fl:
-        #     if ("supplies" in line):
-        #
-        #     order_needs += line
-        # return order_needs
-        return "this", "that"
+
+        #get all counselors on that day
+        counselor_list = []
+        for line in fl:
+            counselor_section, rest = line.split(", drop_off_day")
+            title, counselor = counselor_section.split(" ")
+            if (counselor in counselor_list):
+                print("ERROR:", counselor, "has multiple entries for session", session, "day", day)
+            counselor_list += [counselor]
+
+        f.close()
+
+        # print(counselor_list)
+
+        #get the ingredients needed
+        supplies = {}
+        ingredients = {}
+        for counselor in counselor_list:
+            file_path = "orders/session_" + session + "/day_" + day + "/" + counselor + ".txt"
+            f = open(file_path, "r")
+            fl = f.readlines()
+
+            is_supply = False
+            is_ingredient = False
+
+            for line in fl:
+                if (line == "\n"):
+                    pass
+                elif ("SUPPLIES" in line):
+                    is_supply = True
+                    is_ingredient = False
+                    dict = supplies
+                elif ("INGREDIENTS" in line):
+                    is_supply = False
+                    is_ingredient = True
+                    dict = ingredients
+                else:
+                    if is_supply or is_ingredient:
+                        item, quantity = line.replace("\n", "").split(" ")
+                        if item in dict:
+                            dict[item] += int(quantity)
+                        else:
+                            dict[item] = int(quantity)
+            f.close()
+
+        return "SUPPLIES\n\n" + convert_dict_to_string(supplies), "INGREDIENTS\n\n" + convert_dict_to_string(ingredients)
 
     def log_order(self):
         #THIS SECTION IS FOR THE ENTIRE DAY'S LOG -- ALL CABINS CONTRIBUTE TO THIS LOG
@@ -62,6 +114,8 @@ class Order:
 
         self.log_day_file(day_file)
 
+        day_file.close()
+
         #THIS SECTION IS ONLY FOR ONE CABIN'S LOG -- EACH CABIN HAS THEIR OWN FILE
         #makes a folder if folder doesn't already exist
         cabin_log_folder = session_log_file + "/day_" + str(self.order_info["pickup_day"])
@@ -71,6 +125,7 @@ class Order:
         cabin_file = open(cabin_log_file, "w")
 
         self.log_cabin_file(cabin_file)
+        cabin_file.close()
 
     def log_day_file(self, day_file):
         #sort keys to standardize output
